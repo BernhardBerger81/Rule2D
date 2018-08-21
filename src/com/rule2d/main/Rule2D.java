@@ -115,9 +115,5 @@ public class Rule2D extends JPanel {
 		}
 	}
 
-	// Bla bla
-	private static void test() {
-		
-	}
 
 }
