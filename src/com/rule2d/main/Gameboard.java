@@ -24,8 +24,6 @@ public class Gameboard {
 			DBConnector dbConnector = new DBConnector();
 			String[] terrainColors = dbConnector.queryDatabaseReturnArray("SELECT terrainColor FROM Terrain");
 			
-			System.out.println(Arrays.toString(terrainColors)); // Debugging
-			
 			for(int longitude = 0; longitude < MAPWIDTH; longitude++) {
 				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {					
 					String colorString = terrainColors[randomTerrainType(terrainColors.length)];
@@ -57,7 +55,7 @@ public class Gameboard {
 		}
 	}
 	
-	public void paint(Graphics2D g, int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {
+	public void paintMap(Graphics2D g, int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {
 		///////////////////////////////////////////////////////////////////////////////////
 		///// This prevents the map creation to be triggered twice by Rule2d.paint!!! /////
 		///////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +82,24 @@ public class Gameboard {
 			///////////////////////////////////////////////////////////////////////////////////
 			Rule2D.mapInitialisationCounter++;
 		}		
+	}
+	
+	public void paintPlayerPosition(Graphics2D g, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT) {
+		System.out.println("Inside paintPlayerPosition"); // Debugging
+		g.setColor(Color.WHITE);
+		// Make the oval a circle by setting equal x and y values.
+		int ovalX = 20;
+		int ovalY = 20;
+		
+		// The player's position is show as a white dot with a diameter of 20px.
+		// The dot's coordinates are multiples of the BLOCKWIDTH and BLOCKHEIGHT.
+		// The correctional factor "correctFactor" makes sure that the player position is in the middle of the field.
+		// The correctional factor for width is half the BLOCKWIDTH plus half the oval's x value.
+		// The correctional factor for height is half the BLOCKHEIGHT plus half the oval's y value.
+		int correctFactorW = BLOCKWIDTH/2 + ovalX/2;
+		int correctFactorH = BLOCKHEIGHT/2 + ovalY/2;
+		
+		g.fillOval((BLOCKWIDTH * intPlayerLongitude) - correctFactorW, (BLOCKHEIGHT * intPlayerLatitude) - correctFactorH, ovalX, ovalY);
 	}
 	
 	public int randomTerrainType(int arrayLength) {

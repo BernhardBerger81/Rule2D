@@ -17,8 +17,8 @@ public class Rule2D extends JPanel {
 	// Settings. TODO: Move to settings file.
 	public final static int SCREENRESWIDTH  = 800; // Setting
 	public final static int SCREENRESHEIGHT = 600; // Setting
-	public final static int MAPWIDTH = 20; // Setting
-	public final static int MAPHEIGHT = 20; // Setting
+	public final static int MAPWIDTH = 200; // Setting
+	public final static int MAPHEIGHT = 200; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting	
 	
@@ -26,6 +26,8 @@ public class Rule2D extends JPanel {
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
+	public static int intPlayerLongitude = 10; // Not a setting
+	public static int intPlayerLatitude = 10; // Not a setting
 
 	Gameboard gameboard = new Gameboard(this);
 	
@@ -68,7 +70,9 @@ public class Rule2D extends JPanel {
 			// TODO: Add button to generate map.
 			gameboard.generateMap(MAPWIDTH, MAPHEIGHT);
 			// Second, paint the map on the screen.
-			gameboard.paint(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+			gameboard.paintMap(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+			// Third, paint the player position on the map.
+			gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +108,7 @@ public class Rule2D extends JPanel {
 	}*/
 
 	public static void main(String[] args) throws InterruptedException, Exception {		
-		// First, check if the database is available
+		// Check if the database is available
 		DBConnector dbConnector = new DBConnector();
 		dbConnector.pingDatabase(); // Ping the database
 		if (databaseAvailable == false) {
@@ -112,9 +116,10 @@ public class Rule2D extends JPanel {
 			System.exit(ABORT);
 		}
 		
+		// Initialize stuff
 		init();
 		
-		// Second, start the GUI
+		// Start the GUI
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				createAndShowGUI();
