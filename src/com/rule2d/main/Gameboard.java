@@ -27,9 +27,7 @@ public class Gameboard {
 			System.out.println(Arrays.toString(terrainColors)); // Debugging
 			
 			for(int longitude = 0; longitude < MAPWIDTH; longitude++) {
-				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {
-					// Stylesheet allows stringToColor conversion of the color name loaded from the database
-					StyleSheet stylesheet = new StyleSheet();
+				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {					
 					String colorString = terrainColors[randomTerrainType(terrainColors.length)];
 					
 					Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
