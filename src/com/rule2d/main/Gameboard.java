@@ -16,13 +16,16 @@ public class Gameboard {
 		this.game = game;
 	}	
 
-	public void generateMap(int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {
+	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {
 		if(Rule2D.mapInitialisationCounter == 1) {
-			for(int longitude = 0; longitude < SCREENRESWIDTH/BLOCKWIDTH; longitude++) {
-				for(int latitude = 0; latitude < SCREENRESHEIGHT/BLOCKHEIGHT; latitude++) {
+			for(int longitude = 0; longitude < MAPWIDTH; longitude++) {
+				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {
 					// Stylesheet allows stringToColor conversion of the color name loaded from the database
 					StyleSheet stylesheet = new StyleSheet();
 					String colorString = getTerrainColor(randomTerrainType());				
+					
+					System.out.println("longitude: " + longitude); // Debugging
+					System.out.println("latitude: " + latitude); // Debugging
 					
 					Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
 					

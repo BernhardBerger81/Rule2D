@@ -14,13 +14,18 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Rule2D extends JPanel {
+	// Settings. TODO: Move to settings file.
 	public final static int SCREENRESWIDTH  = 800; // Setting
 	public final static int SCREENRESHEIGHT = 600; // Setting
+	public final static int MAPWIDTH = 20; // Setting
+	public final static int MAPHEIGHT = 20; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
-	public final static int BLOCKHEIGHT = 50; // Setting
+	public final static int BLOCKHEIGHT = 50; // Setting	
+	
+	// Not settings
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
-	public static String[][] mapCoordinatesTerrain = new String[SCREENRESWIDTH/BLOCKWIDTH][SCREENRESHEIGHT/BLOCKHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain
+	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
 
 	Gameboard gameboard = new Gameboard(this);
 	
@@ -54,9 +59,9 @@ public class Rule2D extends JPanel {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		try {
-			// First, generate the map. fill array mapCoordinatesTerrain.
+			// First, generate the map. Fill array mapCoordinatesTerrain.
 			// TODO: Add button to generate map.
-			gameboard.generateMap(SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+			gameboard.generateMap(MAPWIDTH, MAPHEIGHT);
 			// Second, paint the map on the screen.
 			gameboard.paint(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 		} catch (Exception e) {
@@ -114,6 +119,5 @@ public class Rule2D extends JPanel {
 			// Thread.sleep(10);
 		}
 	}
-
 
 }
