@@ -2,6 +2,7 @@ package com.rule2d.main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Arrays;
 import java.util.Random;
 import javax.swing.text.html.StyleSheet;
 
@@ -16,16 +17,20 @@ public class Gameboard {
 		this.game = game;
 	}	
 
-	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {
+	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {		
 		if(Rule2D.mapInitialisationCounter == 1) {
+			
+			// Load the terrain data into an array to reduce database connections
+			DBConnector dbConnector = new DBConnector();
+			String[] terrainColors = dbConnector.queryDatabaseReturnArray("SELECT terrainColor FROM Terrain");
+			
+			System.out.println(Arrays.toString(terrainColors)); // Debugging
+			
 			for(int longitude = 0; longitude < MAPWIDTH; longitude++) {
 				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {
 					// Stylesheet allows stringToColor conversion of the color name loaded from the database
 					StyleSheet stylesheet = new StyleSheet();
-					String colorString = getTerrainColor(randomTerrainType());				
-					
-					System.out.println("longitude: " + longitude); // Debugging
-					System.out.println("latitude: " + latitude); // Debugging
+					String colorString = terrainColors[randomTerrainType(terrainColors.length)];
 					
 					Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
 					
@@ -83,11 +88,11 @@ public class Gameboard {
 		}		
 	}
 	
-	public int randomTerrainType() {
+	public int randomTerrainType(int arrayLength) {
 		Random rand = new Random();
 		
 		// Random number from 1 to number of entries in terrain table.
-		int number = rand.nextInt(6) + 1; // TODO: Programmatically use number of terrain types in database
+		int number = rand.nextInt(arrayLength); // TODO: Programmatically use number of terrain types in database
 		
 		return number;
 	}

@@ -52,6 +52,11 @@ public class Rule2D extends JPanel {
 		setFocusable(true);
 	}
 
+	public static void init() {		
+		// Stuff that needs to be done once when the application starts.		
+	}
+	
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -106,6 +111,8 @@ public class Rule2D extends JPanel {
 			System.out.println("The MySQL database is offline. Exiting program.");
 			System.exit(ABORT);
 		}
+		
+		init();
 		
 		// Second, start the GUI
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
