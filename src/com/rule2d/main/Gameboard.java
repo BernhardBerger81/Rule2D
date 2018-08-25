@@ -6,11 +6,7 @@ import java.util.Arrays;
 import java.util.Random;
 import javax.swing.text.html.StyleSheet;
 
-public class Gameboard {
-	int x = 0;
-	int y = 0;
-	int xa = 1;
-	int ya = 1;
+public class Gameboard {	
 	private Rule2D game;
 
 	public Gameboard(Rule2D game) {

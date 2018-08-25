@@ -80,19 +80,8 @@ public class Rule2D extends JPanel {
 	}
 	
 	private static void createAndShowGUI() {
-		// Create and set up the window
-		// Idea from tutorial at https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TopLevelDemoProject/src/components/TopLevelDemo.java
+		// Create and set up the window		
 		JFrame frame = new JFrame("Rule2D");		
-		
-		// Create the menu bar. Make it have a green background
-		// TODO: Format menu bar. It's length value does not correspond with what is displayed on screen. 
-		JMenuBar greenMenuBar = new JMenuBar();
-		greenMenuBar.setOpaque(true);
-		greenMenuBar.setBackground(new Color(248, 213, 131));
-		greenMenuBar.setPreferredSize(new Dimension(200, 50)); // (length, height)
-		
-		// Set the menu bar to the content pane
-		frame.setJMenuBar(greenMenuBar);
 		
 		Rule2D game = new Rule2D();
 		
@@ -116,7 +105,7 @@ public class Rule2D extends JPanel {
 			System.exit(ABORT);
 		}
 		
-		// Initialize stuff
+		// Initialise stuff
 		init();
 		
 		// Start the GUI
