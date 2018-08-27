@@ -14,14 +14,14 @@ public class Gameboard {
 	}	
 
 	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {		
-		if(Rule2D.mapInitialisationCounter == 1) {
+		if (Rule2D.mapInitialisationCounter == 1) {
 			
 			// Load the terrain data into an array to reduce database connections
 			DBConnector dbConnector = new DBConnector();
 			String[] terrainColors = dbConnector.queryDatabaseReturnArray("SELECT terrainColor FROM Terrain");
 			
-			for(int longitude = 0; longitude < MAPWIDTH; longitude++) {
-				for(int latitude = 0; latitude < MAPHEIGHT; latitude++) {					
+			for (int longitude = 0; longitude < MAPWIDTH; longitude++) {
+				for (int latitude = 0; latitude < MAPHEIGHT; latitude++) {					
 					String colorString = terrainColors[randomTerrainType(terrainColors.length)];
 					
 					Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
@@ -81,7 +81,6 @@ public class Gameboard {
 	}
 	
 	public void paintPlayerPosition(Graphics2D g, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT) {
-		System.out.println("Inside paintPlayerPosition"); // Debugging
 		g.setColor(Color.WHITE);
 		// Make the oval a circle by setting equal x and y values.
 		int ovalX = 20;
@@ -89,7 +88,7 @@ public class Gameboard {
 		
 		// The player's position is show as a white dot with a diameter of 20px.
 		// The dot's coordinates are multiples of the BLOCKWIDTH and BLOCKHEIGHT.
-		// The correctional factor "correctFactor" makes sure that the player position is in the middle of the field.
+		// The correctional factor "correctFactor" makes sure that the player position is in the middle of the block.
 		// The correctional factor for width is half the BLOCKWIDTH plus half the oval's x value.
 		// The correctional factor for height is half the BLOCKHEIGHT plus half the oval's y value.
 		int correctFactorW = BLOCKWIDTH/2 + ovalX/2;
@@ -102,7 +101,7 @@ public class Gameboard {
 		Random rand = new Random();
 		
 		// Random number from 1 to number of entries in terrain table.
-		int number = rand.nextInt(arrayLength); // TODO: Programmatically use number of terrain types in database
+		int number = rand.nextInt(arrayLength);
 		
 		return number;
 	}
