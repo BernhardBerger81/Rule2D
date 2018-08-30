@@ -21,18 +21,21 @@ public class Rule2D extends JPanel {
 	public final static int MAPHEIGHT = 200; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
-	public final static String startingCharacterDirection = "W";
+	public final static String startingCharacterDirection = "SW"; // Setting
 	
 	// Not settings
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
-	public static int intPlayerLongitude = 10; // Not a setting
-	public static int intPlayerLatitude = 4; // Not a setting
+	public static int intPlayerLongitude = 1; // Not a setting
+	public static int intPlayerLatitude = 1; // Not a setting
 	public static String characterDirection = startingCharacterDirection; // Not a setting
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting
 
 	Gameboard gameboard = new Gameboard(this);
+	// Create and set up the window		
+	public static JFrame frame = new JFrame("Rule2D");
+	
 	
 	public Rule2D() {
 		addKeyListener(new KeyListener() {
@@ -90,9 +93,6 @@ public class Rule2D extends JPanel {
 	}
 	
 	private static void createAndShowGUI() {
-		// Create and set up the window		
-		JFrame frame = new JFrame("Rule2D");		
-		
 		Rule2D game = new Rule2D();
 		
 		frame.add(game);
@@ -100,6 +100,10 @@ public class Rule2D extends JPanel {
 		frame.setSize(SCREENRESWIDTH + 25, SCREENRESHEIGHT + 50);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void repaint(JFrame frame) {
+		frame.repaint();
 	}
 	
 /*	public void gameOver() {
