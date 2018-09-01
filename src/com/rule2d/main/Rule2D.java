@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
@@ -50,13 +51,12 @@ public class Rule2D extends JPanel {
 			public void keyPressed(KeyEvent e) {
 				// Hand over KeyEvent handling to KeyboardControl.keyPressed 
 				KeyboardControl keyboardControl = new KeyboardControl();
-				keyboardControl.keyPressed(e);				
+				keyboardControl.keyPressed(e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 		
 		});
@@ -64,9 +64,14 @@ public class Rule2D extends JPanel {
 	}
 
 	public static void init() {		
-		// Stuff that needs to be done once when the application starts.		
-	}
-	
+		// Stuff that needs to be done once when the application starts.
+		// Make sure that Numlock is on
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		// Get the locking state of the Numlock key. If it is not "on", turn it on
+		if (!toolkit.getLockingKeyState(KeyEvent.VK_NUM_LOCK)) {
+			toolkit.setLockingKeyState(KeyEvent.VK_NUM_LOCK, true);
+		}
+	}	
 	
 	@Override
 	public void paint(Graphics g) {
