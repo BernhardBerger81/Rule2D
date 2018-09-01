@@ -17,18 +17,18 @@ public class Rule2D extends JPanel {
 	// Settings. TODO: Move to settings file.
 	public final static int SCREENRESWIDTH  = 800; // Setting
 	public final static int SCREENRESHEIGHT = 600; // Setting
-	public final static int MAPWIDTH = 200; // Setting
-	public final static int MAPHEIGHT = 200; // Setting
+	public final static int MAPWIDTH = 16; // Setting
+	public final static int MAPHEIGHT = 12; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
-	public final static String startingCharacterDirection = "SW"; // Setting
+	public final static String startingCharacterDirection = "N"; // Setting
 	
 	// Not settings
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
-	public static int intPlayerLongitude = 1; // Not a setting
-	public static int intPlayerLatitude = 1; // Not a setting
+	public static int intPlayerLongitude = 5; // Not a setting
+	public static int intPlayerLatitude = 5; // Not a setting
 	public static String characterDirection = startingCharacterDirection; // Not a setting
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting
 
