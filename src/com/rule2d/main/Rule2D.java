@@ -23,6 +23,8 @@ public class Rule2D extends JPanel {
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
 	public final static String startingCharacterDirection = "N"; // Setting
+	public final static int characterDirectionIndicatorHeight = 20; // Setting
+	public final static double startingMapZoomFactor = 1;
 	
 	// Not settings
 	public static int mapInitialisationCounter = 0; // Not a setting
@@ -31,7 +33,8 @@ public class Rule2D extends JPanel {
 	public static int intPlayerLongitude = 5; // Not a setting
 	public static int intPlayerLatitude = 5; // Not a setting
 	public static String characterDirection = startingCharacterDirection; // Not a setting
-	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting
+	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
+	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
 
 	Gameboard gameboard = new Gameboard(this);
 	// Create and set up the window		
@@ -90,7 +93,9 @@ public class Rule2D extends JPanel {
 			// Second, paint the map on the screen.
 			gameboard.paintMap(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 			// Third, paint the player position on the map.
-			gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);
+			if (Rule2D.mapInitialisationCounter > 1) {
+				gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

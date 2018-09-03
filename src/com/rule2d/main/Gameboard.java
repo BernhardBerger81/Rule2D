@@ -107,12 +107,22 @@ public class Gameboard {
 		
 		// The player direction indicator shows north for the time being...
 		String characterDirection = Rule2D.characterDirection;
+		double zoomFactor = Rule2D.mapZoomFactor;
+		int cDIH = Rule2D.characterDirectionIndicatorHeight; // characterDirectionIndicatorHeight cDIH
 		
 		switch(characterDirection) {
 			case "N":
-				// Define the x and y coordinate values of the triangle end points 
-				int xN[] = {intPlayerLongitude*BLOCKWIDTH - 25, intPlayerLongitude*BLOCKWIDTH - 30, intPlayerLongitude*BLOCKWIDTH - 20};
-				int yN[] = {intPlayerLatitude*BLOCKHEIGHT - 45, intPlayerLatitude*BLOCKHEIGHT - 35, intPlayerLatitude*BLOCKHEIGHT - 35};
+				// x: 25, 30, 20
+				// y: 45, 35, 35
+				double angleN = 0.0;
+				
+				// Define the x and y coordinate values of the triangle end points
+				int xN[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleN, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleN + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleN - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yN[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleN, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleN + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleN - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nN = 3;
 				
@@ -121,9 +131,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonN);
 				break;
 			case "NE":
+				// x: 11, 22, 15
+				// y: 39, 35, 28
+				double angleNE = 315.0;
+				
 				// Define the x and y coordinate values of the triangle end points 
-				int xNE[] = {intPlayerLongitude*BLOCKWIDTH - 10, intPlayerLongitude*BLOCKWIDTH - 22, intPlayerLongitude*BLOCKWIDTH - 15};
-				int yNE[] = {intPlayerLatitude*BLOCKHEIGHT - 40, intPlayerLatitude*BLOCKHEIGHT - 35, intPlayerLatitude*BLOCKHEIGHT - 28};
+				int xNE[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yNE[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nNE = 3;
 				
@@ -132,9 +150,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonNE);
 				break;
 			case "E":
+				// x: 5, 15, 15
+				// y: 25, 20, 30
+				double angleE = 270.0;
+				
 				// Define the x and y coordinate values of the triangle end points
-				int xE[] = {intPlayerLongitude*BLOCKWIDTH - 5, intPlayerLongitude*BLOCKWIDTH - 15, intPlayerLongitude*BLOCKWIDTH - 15};
-				int yE[] = {intPlayerLatitude*BLOCKHEIGHT - 25, intPlayerLatitude*BLOCKHEIGHT -20, intPlayerLatitude*BLOCKHEIGHT - 30};
+				int xE[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yE[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				int nE = 3;
 				
 				// Define the polygon
@@ -142,9 +168,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonE);
 				break;
 			case "SE":
+				// x: 10, 15, 22
+				// y: 10, 22, 15
+				double angleSE = 225.0;
+				
 				// Define the x and y coordinate values of the triangle end points 
-				int xSE[] = {intPlayerLongitude*BLOCKWIDTH - 10, intPlayerLongitude*BLOCKWIDTH - 15, intPlayerLongitude*BLOCKWIDTH - 23};
-				int ySE[] = {intPlayerLatitude*BLOCKHEIGHT - 10, intPlayerLatitude*BLOCKHEIGHT - 21, intPlayerLatitude*BLOCKHEIGHT - 12};
+				int xSE[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int ySE[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSE, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSE + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSE - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nSE = 3;
 				
@@ -153,9 +187,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonSE);
 				break;
 			case "S":
+				// x: 25, 30, 20
+				// y: 5, 15, 15
+				double angleS = 180.0;
+				
 				// Define the x and y coordinate values of the triangle end points 
-				int xS[] = {intPlayerLongitude*BLOCKWIDTH - 25, intPlayerLongitude*BLOCKWIDTH - 30, intPlayerLongitude*BLOCKWIDTH - 20};
-				int yS[] = {intPlayerLatitude*BLOCKHEIGHT - 5, intPlayerLatitude*BLOCKHEIGHT - 15, intPlayerLatitude*BLOCKHEIGHT - 15};
+				int xS[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleS, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleS + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleS - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yS[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleS, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleS + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleS - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nS = 3;
 				
@@ -164,9 +206,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonS);
 				break;
 			case "SW":
+				// x: 40, 28, 35
+				// y: 10, 15, 22
+				double angleSW = 135.0;
+				
 				// Define the x and y coordinate values of the triangle end points 
-				int xSW[] = {intPlayerLongitude*BLOCKWIDTH - 40, intPlayerLongitude*BLOCKWIDTH - 28, intPlayerLongitude*BLOCKWIDTH - 35};
-				int ySW[] = {intPlayerLatitude*BLOCKHEIGHT - 10, intPlayerLatitude*BLOCKHEIGHT - 15, intPlayerLatitude*BLOCKHEIGHT - 22};
+				int xSW[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleSW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int ySW[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleSW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nSW = 3;
 				
@@ -175,9 +225,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonSW);
 				break;
 			case "W":
+				// x: 45, 35, 35
+				// y: 25, 20, 30
+				double angleW = 90.0;
+				
 				// Define the x and y coordinate values of the triangle end points
-				int xW[] = {intPlayerLongitude*BLOCKWIDTH - 45, intPlayerLongitude*BLOCKWIDTH - 35, intPlayerLongitude*BLOCKWIDTH - 35};
-				int yW[] = {intPlayerLatitude*BLOCKHEIGHT - 25, intPlayerLatitude*BLOCKHEIGHT -20, intPlayerLatitude*BLOCKHEIGHT - 30};
+				int xW[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yW[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				int nW = 3;
 				
 				// Define the polygon
@@ -185,9 +243,17 @@ public class Gameboard {
 				g2d.fillPolygon(polygonW);
 				break;
 			case "NW":
+				// x: 39, 28, 35
+				// y: 39, 35, 28
+				double angleNW = 45.0;
+				
 				// Define the x and y coordinate values of the triangle end points 
-				int xNW[] = {intPlayerLongitude*BLOCKWIDTH - 40, intPlayerLongitude*BLOCKWIDTH - 28, intPlayerLongitude*BLOCKWIDTH - 35};
-				int yNW[] = {intPlayerLatitude*BLOCKHEIGHT - 40, intPlayerLatitude*BLOCKHEIGHT - 35, intPlayerLatitude*BLOCKHEIGHT - 28};
+				int xNW[] = {intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLongitude*BLOCKWIDTH - getXSubtrahend(angleNW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
+				int yNW[] = {intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNW, cDIH*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNW + 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2),
+							 intPlayerLatitude*BLOCKHEIGHT - getYSubtrahend(angleNW - 30, cDIH*0.55*zoomFactor, BLOCKWIDTH/2)};
 				// Define the number of points in the polygon
 				int nNW = 3;
 				
@@ -214,7 +280,31 @@ public class Gameboard {
 		return terrainColor;
 	}
 	
-	public void repaint(Graphics2D g2d) {
-		
+	public int getXSubtrahend(double angle, double distance, int xCoordinate) {
+		// Math as described here: https://classroom.synonym.com/coordinates-distances-angles-2732.html
+		// Convert the angle from degrees to radians
+		// Math.sin requires the angle in radians, see: https://www.tutorialspoint.com/java/lang/math_sin.htm
+		double angleRadians = Math.toRadians(angle);
+		double sinAngle = Math.sin(angleRadians);
+		// Multiply angleRadians with the distance to the wanted coordinate
+		double multiply = sinAngle * distance;
+		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted xCoordinate value
+		int xSubtrahend = xCoordinate + (int) Math.round(multiply);
+				
+		return xSubtrahend;
+	}
+	
+	public int getYSubtrahend(double angle, double distance, int yCoordinate) {
+		// Math as described here: https://classroom.synonym.com/coordinates-distances-angles-2732.html
+		// Convert the angle from degrees to radians
+		// Math.cos requires the angle in radians, see: https://www.tutorialspoint.com/java/lang/math_cos.htm
+		double angleRadians = Math.toRadians(angle);
+		double sinAngle = Math.cos(angleRadians);
+		// Multiply angleRadians with the distance to the wanted coordinate
+		double multiply = sinAngle * distance;
+		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted xCoordinate value
+		int ySubtrahend = yCoordinate + (int) Math.round(multiply);
+				
+		return ySubtrahend;
 	}
 }
