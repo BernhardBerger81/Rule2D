@@ -1,6 +1,7 @@
 package com.rule2d.main;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +9,9 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -24,7 +28,7 @@ public class Rule2D extends JPanel {
 	public final static int BLOCKHEIGHT = 50; // Setting
 	public final static String startingCharacterDirection = "N"; // Setting
 	public final static int characterDirectionIndicatorHeight = 20; // Setting
-	public final static double startingMapZoomFactor = 1;
+	public final static double startingMapZoomFactor = 1; // Setting
 	
 	// Not settings
 	public static int mapInitialisationCounter = 0; // Not a setting
@@ -35,6 +39,7 @@ public class Rule2D extends JPanel {
 	public static String characterDirection = startingCharacterDirection; // Not a setting
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
 	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
+	public static String windowStatus = "IntroScreen";
 
 	Gameboard gameboard = new Gameboard(this);
 	// Create and set up the window		
@@ -64,6 +69,35 @@ public class Rule2D extends JPanel {
 		
 		});
 		setFocusable(true);
+		
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent mouseEvent) {				
+				if (mouseEvent.getX() >= 0 && mouseEvent.getX() <= 200) {
+					// Button "Create Map" clicked
+					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
+						System.out.println(mouseEvent); // Debugging
+						windowStatus = "CreateMap";
+						System.out.println(windowStatus); // Debugging
+						repaint();
+					}
+					// Button "Create Character" clicked
+				} else if (mouseEvent.getX() >= 250 && mouseEvent.getX() <= 450) {
+					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
+						System.out.println(mouseEvent); // Debugging
+						windowStatus = "CreateCharacter";
+						System.out.println(windowStatus); // Debugging
+						repaint();
+					}
+				} else if (mouseEvent.getX() >= 500 && mouseEvent.getX() <= 700) {
+					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
+						System.out.println(mouseEvent); // Debugging
+						windowStatus = "CreateMonster";
+						System.out.println("windowStatus"); // Debugging
+						repaint();
+					}
+				}
+			}
+		});
 	}
 
 	public static void init() {		
@@ -83,19 +117,37 @@ public class Rule2D extends JPanel {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		try {
-			// First, generate the map. Fill array mapCoordinatesTerrain.
-			// Only generate map once: When mapInitialisationCounter == 0
-			// TODO: Add button to generate map.
-			if (mapInitialisationCounter == 1) {
-				gameboard.generateMap(MAPWIDTH, MAPHEIGHT);
+			// Load the intro screen.
+			//IntroScreen.addComponentsToPane(frame.getContentPane(), gameboard, MAPWIDTH, MAPHEIGHT, g2d, SCREENRESWIDTH, SCREENRESHEIGHT,
+			//	BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude, mapInitialisationCounter);
+			
+			if (windowStatus == "IntroScreen") {
+				// Load the intro screen
+				IntroScreen.paintIntroScreen(g2d);
 			}
 			
-			// Second, paint the map on the screen.
-			gameboard.paintMap(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-			// Third, paint the player position on the map.
-			if (Rule2D.mapInitialisationCounter > 1) {
-				gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);
+			if (windowStatus == "CreateMap") {
+				// Generate the map. Fill array mapCoordinatesTerrain.
+				gameboard.generateMap(MAPWIDTH, MAPHEIGHT);				
 			}
+			
+			if (windowStatus == "ShowMap") {
+				// Paint the map on the screen.
+				gameboard.paintMap(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				
+				// Paint the player position on the map.
+				gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);				
+			}
+			
+			if (windowStatus == "CreateCharacter") {
+				// Show the character creation screen
+				gameboard.createCharacter(g2d);
+			}
+			
+			if (windowStatus == "CreateMonster") {
+				// Show the monster creation screen
+				gameboard.createMonster(g2d);
+			}			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,14 +158,10 @@ public class Rule2D extends JPanel {
 		Rule2D game = new Rule2D();
 		
 		frame.add(game);
-		// Set the width and height of the frame to accommodate the strange fact that the blocks don't fit into the frame...  
-		frame.setSize(SCREENRESWIDTH + 25, SCREENRESHEIGHT + 50);
+		// Adjust the width and height of the frame to accommodate the strange fact that the blocks don't fit into the frame...  
+		frame.setSize(SCREENRESWIDTH + 25, SCREENRESHEIGHT + 50); // TODO: Investigate why width and height need to be adjusted to fit the frame
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	public void repaint(JFrame frame) {
-		frame.repaint();
 	}
 	
 /*	public void gameOver() {

@@ -14,71 +14,52 @@ public class Gameboard {
 		this.game = game;
 	}	
 
-	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {		
-		if (Rule2D.mapInitialisationCounter == 1) {
-			
-			// Load the terrain data into an array to reduce database connections
-			DBConnector dbConnector = new DBConnector();
-			String[] terrainColors = dbConnector.queryDatabaseReturnArray("SELECT terrainColor FROM Terrain");
-			
-			for (int longitude = 0; longitude < MAPWIDTH; longitude++) {
-				for (int latitude = 0; latitude < MAPHEIGHT; latitude++) {					
-					String colorString = terrainColors[randomTerrainType(terrainColors.length)];
-					
-					Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
-					
-					// Old test code
-					/*if(i % 2 == 0 && j % 2 == 0) {
-						g.setColor(Color.RED);
-						g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-					} else if(i % 2 != 0 && j % 2 == 0) {
-						g.setColor(Color.BLUE);
-						g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-					} else if(i % 2 == 0 && j % 2 != 0) {
-						g.setColor(Color.BLUE);
-						g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-					} else if (i % 2 != 0 && j % 2 != 0) {
-						g.setColor(Color.RED);
-						g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-					}	*/		
-				}
+	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {
+		// Load the terrain data into an array to reduce database connections
+		DBConnector dbConnector = new DBConnector();
+		String[] terrainColors = dbConnector.queryDatabaseReturnArray("SELECT terrainColor FROM Terrain");
+		
+		for (int longitude = 0; longitude < MAPWIDTH; longitude++) {
+			for (int latitude = 0; latitude < MAPHEIGHT; latitude++) {
+				String colorString = terrainColors[randomTerrainType(terrainColors.length)];
+				
+				Rule2D.mapCoordinatesTerrain[longitude][latitude] = colorString;
+				// System.out.println(Rule2D.mapCoordinatesTerrain[longitude][latitude]); // Debugging
+				
+				// Old test code
+				/*if(i % 2 == 0 && j % 2 == 0) {
+					g.setColor(Color.RED);
+					g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				} else if(i % 2 != 0 && j % 2 == 0) {
+					g.setColor(Color.BLUE);
+					g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				} else if(i % 2 == 0 && j % 2 != 0) {
+					g.setColor(Color.BLUE);
+					g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				} else if (i % 2 != 0 && j % 2 != 0) {
+					g.setColor(Color.RED);
+					g.fillRect(i*BLOCKWIDTH, j*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				}	*/		
 			}
-			
-			///////////////////////////////////////////////////////////////////////////////////
-			///// This prevents the map creation to be triggered twice by Rule2d.paint!!! /////
-			///////////////////////////////////////////////////////////////////////////////////
-			Rule2D.mapInitialisationCounter++;			
-			
 		}
+		
+		Rule2D.windowStatus = "ShowMap";		
 	}
 	
-	public void paintMap(Graphics2D g2d, int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {
-		///////////////////////////////////////////////////////////////////////////////////
-		///// This prevents the map creation to be triggered twice by Rule2d.paint!!! /////
-		///////////////////////////////////////////////////////////////////////////////////
-		
-		// Random map generation and painting using the existing filed types in the database
-		if (Rule2D.mapInitialisationCounter > 1) {
-			// Paint the map field from the saved array  
-			for (int longitude = 0; longitude < SCREENRESWIDTH/BLOCKWIDTH; longitude ++) {
-				for (int latitude = 0; latitude < SCREENRESHEIGHT/BLOCKHEIGHT; latitude ++) {
-					// Stylesheet allows stringToColor conversion of the color name loaded from the database
-					StyleSheet stylesheet = new StyleSheet();
-					String colorString = Rule2D.mapCoordinatesTerrain[longitude][latitude];
-					Color color = stylesheet.stringToColor(colorString);
-					
-					g2d.setColor(color);
-					g2d.fillRect(longitude*BLOCKWIDTH, latitude*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-				}
+	public void paintMap(Graphics2D g2d, int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {		
+		// Map painting using the array created during map creation
+		// Paint the map field from the saved array  
+		for (int longitude = 0; longitude < SCREENRESWIDTH/BLOCKWIDTH; longitude ++) {
+			for (int latitude = 0; latitude < SCREENRESHEIGHT/BLOCKHEIGHT; latitude ++) {
+				// Stylesheet allows stringToColor conversion of the color name loaded from the array
+				StyleSheet stylesheet = new StyleSheet();
+				String colorString = Rule2D.mapCoordinatesTerrain[longitude][latitude];
+				Color color = stylesheet.stringToColor(colorString);
+				
+				g2d.setColor(color);
+				g2d.fillRect(longitude*BLOCKWIDTH, latitude*BLOCKHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 			}
-		}		
-		
-		else if (Rule2D.mapInitialisationCounter < 1) {
-			///////////////////////////////////////////////////////////////////////////////////
-			///// This prevents the map creation to be triggered twice by Rule2d.paint!!! /////
-			///////////////////////////////////////////////////////////////////////////////////
-			Rule2D.mapInitialisationCounter++;
-		}		
+		}
 	}
 	
 	public void paintPlayerPosition(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT) {
@@ -98,7 +79,7 @@ public class Gameboard {
 		g2d.fillOval((BLOCKWIDTH * intPlayerLongitude) - correctFactorW, (BLOCKHEIGHT * intPlayerLatitude) - correctFactorH, ovalX, ovalY);
 		
 		// Paint the player direction indicator
-		paintPlayerDirection(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);		
+		paintPlayerDirection(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);
 	}
 	
 	public void paintPlayerDirection(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT) {
@@ -234,7 +215,7 @@ public class Gameboard {
 		}
 	}
 	
-	public int randomTerrainType(int arrayLength) {
+	private int randomTerrainType(int arrayLength) {
 		Random rand = new Random();
 		
 		// Random number from 1 to number of entries in terrain table.
@@ -243,7 +224,7 @@ public class Gameboard {
 		return number;
 	}
 	
-	public String getTerrainColor(int pkTerrain) throws Exception {
+	private String getTerrainColor(int pkTerrain) throws Exception {
 		DBConnector dbConnector = new DBConnector();
 		String terrainColor = dbConnector.queryDataBaseReturnString("SELECT terrainColor FROM Terrain WHERE pkTerrain = " + pkTerrain);
 				
@@ -251,7 +232,7 @@ public class Gameboard {
 	}
 	
 	// Returns all three x coordinates
-	public int[] getXCoordinates(double angle, int intPlayerLongitude, int BLOCKWIDTH) {
+	private int[] getXCoordinates(double angle, int intPlayerLongitude, int BLOCKWIDTH) {
 		double zoomFactor = Rule2D.mapZoomFactor;
 		int cDIH = Rule2D.characterDirectionIndicatorHeight; // characterDirectionIndicatorHeight cDIH		
 		int[] returnArray = new int[3];
@@ -280,7 +261,7 @@ public class Gameboard {
 	}
 	
 	// Returns all three y coordinates
-	public int[] getYCoordinates(double angle, int intPlayerLatitude, int BLOCKHEIGHT) {
+	private int[] getYCoordinates(double angle, int intPlayerLatitude, int BLOCKHEIGHT) {
 		double zoomFactor = Rule2D.mapZoomFactor;
 		int cDIH = Rule2D.characterDirectionIndicatorHeight; // characterDirectionIndicatorHeight cDIH		
 		int[] returnArray = new int[3];
@@ -308,7 +289,7 @@ public class Gameboard {
 		return returnArray;
 	}
 	
-	public int getXSubtrahend(double angle, double distance, int xCoordinate) {
+	private int getXSubtrahend(double angle, double distance, int xCoordinate) {
 		// Math as described here: https://classroom.synonym.com/coordinates-distances-angles-2732.html
 		// Convert the angle from degrees to radians
 		// Math.sin requires the angle in radians, see: https://www.tutorialspoint.com/java/lang/math_sin.htm
@@ -322,7 +303,7 @@ public class Gameboard {
 		return xSubtrahend;
 	}
 	
-	public int getYSubtrahend(double angle, double distance, int yCoordinate) {
+	private int getYSubtrahend(double angle, double distance, int yCoordinate) {
 		// Math as described here: https://classroom.synonym.com/coordinates-distances-angles-2732.html
 		// Convert the angle from degrees to radians
 		// Math.cos requires the angle in radians, see: https://www.tutorialspoint.com/java/lang/math_cos.htm
@@ -334,5 +315,23 @@ public class Gameboard {
 		int ySubtrahend = yCoordinate + (int) Math.round(multiply);
 				
 		return ySubtrahend;
+	}
+	
+	// "Clear" the screen from any Graphics objects by painting a grey rectangle of size SCREENRESWIDTH * SCREENRESHEIGHT 
+	public void clearScreen(Graphics2D g2d, int SCREENRESWIDTH, int SCREENRESHEIGHT) {
+		g2d.setColor(new Color(220, 220, 220));
+		g2d.fillRect(0, 0, SCREENRESWIDTH, SCREENRESHEIGHT);
+	}
+	
+	// TODO: Put in own class "CharacterCreationScreen"
+	public void createCharacter(Graphics2D g2d) {
+		System.out.println("Inside createCharacter"); // Debugging
+		g2d.drawString("This is the character creation screen", 200, 100);
+	}
+	
+	// TODO: Put in own class "MonsterCreationScreen"
+	public void createMonster(Graphics2D g2d) {
+		System.out.println("Inside createMonster"); // Debugging
+		g2d.drawString("This is the monster creation screen", 200, 100);
 	}
 }
