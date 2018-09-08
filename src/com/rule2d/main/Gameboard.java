@@ -3,7 +3,6 @@ package com.rule2d.main;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Arrays;
 import java.util.Random;
 import javax.swing.text.html.StyleSheet;
 
