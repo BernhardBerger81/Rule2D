@@ -44,21 +44,21 @@ public class Rule2D extends JPanel {
 	public Rule2D() {
 		addKeyListener(new KeyListener() {
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(KeyEvent keyEvent) {
 				// https://stackoverflow.com/questions/7071757/keylistener-keypressed-versus-keytyped
 				// keyTyped - when the unicode character represented by this key is sent by the keyboard to system input.
 				// Note that keyTyped will only work for something that can be printed...
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent keyEvent) {
 				// Hand over KeyEvent handling to KeyboardControl.keyPressed 
 				KeyboardControl keyboardControl = new KeyboardControl();
-				keyboardControl.keyPressed(e);
+				keyboardControl.keyPressed(keyEvent);
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(KeyEvent keyEvent) {
 				// TODO Auto-generated method stub
 			}
 		
@@ -66,31 +66,9 @@ public class Rule2D extends JPanel {
 		setFocusable(true);
 		
 		addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent mouseEvent) {				
-				if (mouseEvent.getX() >= 0 && mouseEvent.getX() <= 200) {
-					// Button "Create Map" clicked
-					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
-						System.out.println(mouseEvent); // Debugging
-						windowStatus = "CreateMap";
-						System.out.println(windowStatus); // Debugging
-						repaint();
-					}
-					// Button "Create Character" clicked
-				} else if (mouseEvent.getX() >= 250 && mouseEvent.getX() <= 450) {
-					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
-						System.out.println(mouseEvent); // Debugging
-						windowStatus = "CreateCharacter";
-						System.out.println(windowStatus); // Debugging
-						repaint();
-					}
-				} else if (mouseEvent.getX() >= 500 && mouseEvent.getX() <= 700) {
-					if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
-						System.out.println(mouseEvent); // Debugging
-						windowStatus = "CreateMonster";
-						System.out.println("windowStatus"); // Debugging
-						repaint();
-					}
-				}
+			public void mousePressed(MouseEvent mouseEvent) {
+				MouseControl mouseControl = new MouseControl();
+				mouseControl.mousePressed(mouseEvent);
 			}
 		});
 	}
