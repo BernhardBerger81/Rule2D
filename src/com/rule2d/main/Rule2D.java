@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,7 +22,6 @@ public class Rule2D extends JPanel {
 	public final static int MAPHEIGHT = 12; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
-	public final static String startingCharacterDirection = "N"; // Setting
 	public final static int characterDirectionIndicatorHeight = 20; // Setting
 	public final static double startingMapZoomFactor = 1; // Setting
 	
@@ -31,8 +31,8 @@ public class Rule2D extends JPanel {
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
 	public static int intPlayerLongitude = 5; // Not a setting
 	public static int intPlayerLatitude = 5; // Not a setting
-	public static String characterDirection = startingCharacterDirection; // Not a setting
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
+	public static String characterDirection = randomCharacterStartingDirection(); // Not a setting	
 	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
 	public static String windowStatus = "IntroScreen";
 
@@ -98,6 +98,18 @@ public class Rule2D extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static String randomCharacterStartingDirection() {
+		Random rand = new Random();
+		
+		// Random number from 1 to number of entries in array movementDirections.
+		int number = rand.nextInt(movementDirections.length);
+		System.out.println(number);	// Debugging
+		
+		String returnString = movementDirections[number];
+		
+		return returnString;
 	}
 	
 	private static void createAndShowGUI() {
