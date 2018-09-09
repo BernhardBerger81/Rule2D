@@ -42,7 +42,8 @@ public class Gameboard {
 			}
 		}
 		
-		Rule2D.windowStatus = "ShowMap";		
+		Rule2D.windowStatus = "ShowMap";
+		Rule2D.frame.repaint();
 	}
 	
 	public void paintMap(Graphics2D g2d, int SCREENRESWIDTH, int SCREENRESHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT) throws Exception {		
@@ -296,7 +297,7 @@ public class Gameboard {
 		double sinAngle = Math.sin(angleRadians);
 		// Multiply angleRadians with the distance to the wanted coordinate
 		double multiply = sinAngle * distance;
-		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted xCoordinate value
+		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted xSubtrahend value
 		int xSubtrahend = xCoordinate + (int) Math.round(multiply);
 				
 		return xSubtrahend;
@@ -310,13 +311,14 @@ public class Gameboard {
 		double sinAngle = Math.cos(angleRadians);
 		// Multiply angleRadians with the distance to the wanted coordinate
 		double multiply = sinAngle * distance;
-		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted xCoordinate value
+		// Round the value of multiply to the nearest int and add it to the xCoordinate value to obtain the wanted ySubtrahend value
 		int ySubtrahend = yCoordinate + (int) Math.round(multiply);
 				
 		return ySubtrahend;
 	}
 	
-	// "Clear" the screen from any Graphics objects by painting a grey rectangle of size SCREENRESWIDTH * SCREENRESHEIGHT 
+	// "Clear" the screen from any Graphics objects by painting a grey rectangle of size SCREENRESWIDTH * SCREENRESHEIGHT
+	// TODO: Do we need this method???
 	public void clearScreen(Graphics2D g2d, int SCREENRESWIDTH, int SCREENRESHEIGHT) {
 		g2d.setColor(new Color(220, 220, 220));
 		g2d.fillRect(0, 0, SCREENRESWIDTH, SCREENRESHEIGHT);
@@ -324,13 +326,11 @@ public class Gameboard {
 	
 	// TODO: Put in own class "CharacterCreationScreen"
 	public void createCharacter(Graphics2D g2d) {
-		System.out.println("Inside createCharacter"); // Debugging
 		g2d.drawString("This is the character creation screen", 200, 100);
 	}
 	
 	// TODO: Put in own class "MonsterCreationScreen"
 	public void createMonster(Graphics2D g2d) {
-		System.out.println("Inside createMonster"); // Debugging
 		g2d.drawString("This is the monster creation screen", 200, 100);
 	}
 }

@@ -13,8 +13,7 @@ public class KeyboardControl {
 				keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD7 || keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD8 || 
 				keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD9) {
 			movementControl(keyEvent);
-		}
-		
+		}		
 	}
 	
 	public void movementControl(KeyEvent e) {

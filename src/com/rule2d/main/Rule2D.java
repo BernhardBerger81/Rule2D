@@ -91,36 +91,9 @@ public class Rule2D extends JPanel {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		try {
 			// Load the intro screen.
-			//IntroScreen.addComponentsToPane(frame.getContentPane(), gameboard, MAPWIDTH, MAPHEIGHT, g2d, SCREENRESWIDTH, SCREENRESHEIGHT,
-			//	BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude, mapInitialisationCounter);
-			
-			if (windowStatus == "IntroScreen") {
-				// Load the intro screen
-				IntroScreen.paintIntroScreen(g2d);
-			}
-			
-			if (windowStatus == "CreateMap") {
-				// Generate the map. Fill array mapCoordinatesTerrain.
-				gameboard.generateMap(MAPWIDTH, MAPHEIGHT);				
-			}
-			
-			if (windowStatus == "ShowMap") {
-				// Paint the map on the screen.
-				gameboard.paintMap(g2d, SCREENRESWIDTH, SCREENRESHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
-				
-				// Paint the player position on the map.
-				gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT);				
-			}
-			
-			if (windowStatus == "CreateCharacter") {
-				// Show the character creation screen
-				gameboard.createCharacter(g2d);
-			}
-			
-			if (windowStatus == "CreateMonster") {
-				// Show the monster creation screen
-				gameboard.createMonster(g2d);
-			}			
+			ScreenControl screenControl = new ScreenControl();
+			screenControl.DoScreenControl(g2d, windowStatus, gameboard, MAPWIDTH, MAPHEIGHT, SCREENRESWIDTH, SCREENRESHEIGHT,
+					BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
