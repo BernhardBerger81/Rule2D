@@ -397,7 +397,7 @@ public class KeyboardControl {
 				///// Move forward while facing North /////
 				/////////////////////////////////////////////
 				case "N":
-					if (Rule2D.intPlayerLatitude - 1 <= 0) {
+					if (Rule2D.intPlayerLatitude - 1 < 0) {
 						// Walking over the edge of the map, we arrive at the other side of the globe via the pole.
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -423,7 +423,7 @@ public class KeyboardControl {
 				///// Move forward while facing North East /////
 				//////////////////////////////////////////////////
 				case "NE":					
-					if (Rule2D.intPlayerLatitude - 1 <= 0) {
+					if (Rule2D.intPlayerLatitude - 1 < 0) {
 						// Walking over the edge of the map, we arrive at the other side of the globe via the pole.
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);							

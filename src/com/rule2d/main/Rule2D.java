@@ -16,12 +16,17 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Rule2D extends JPanel {
 	// Settings. TODO: Move to settings file.
-	public final static int SCREENRESWIDTH  = 800; // Setting
-	public final static int SCREENRESHEIGHT = 600; // Setting
-	public final static int MAPWIDTH = 16; // Setting
-	public final static int MAPHEIGHT = 12; // Setting
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
+	public final static int MAPDISPLAYWIDTHBLOCKS = 17; // Setting
+	public final static int MAPDISPLAYHEIGHTBLOCKS = 13; // Setting
+	public final static int SCREENRESWIDTH  = 1200; // Setting
+	public final static int SCREENRESHEIGHT = 1000; // Setting
+	public final static int MAPDISPLAYWIDTH = MAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
+	public final static int MAPDISPLAYHEIGHT = MAPDISPLAYHEIGHTBLOCKS * BLOCKHEIGHT; // Setting
+	public final static int MAPWIDTH = 20; // Setting // Has to be even number!!!
+	public final static int MAPHEIGHT = 16; // Setting // Has to be even number!!!
+
 	public final static int characterDirectionIndicatorHeight = 20; // Setting
 	public final static double startingMapZoomFactor = 1; // Setting
 	
@@ -29,8 +34,8 @@ public class Rule2D extends JPanel {
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
-	public static int intPlayerLongitude = 5; // Not a setting
-	public static int intPlayerLatitude = 5; // Not a setting
+	public static int intPlayerLongitude = 9; // Not a setting
+	public static int intPlayerLatitude = 7; // Not a setting
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
 	public static String characterDirection = randomCharacterStartingDirection(); // Not a setting	
 	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
@@ -92,7 +97,7 @@ public class Rule2D extends JPanel {
 		try {
 			// Load the intro screen.
 			ScreenControl screenControl = new ScreenControl();
-			screenControl.DoScreenControl(g2d, windowStatus, gameboard, MAPWIDTH, MAPHEIGHT, SCREENRESWIDTH, SCREENRESHEIGHT,
+			screenControl.doScreenControl(g2d, windowStatus, gameboard, MAPWIDTH, MAPHEIGHT, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT,
 					BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -105,7 +110,6 @@ public class Rule2D extends JPanel {
 		
 		// Random number from 1 to number of entries in array movementDirections.
 		int number = rand.nextInt(movementDirections.length);
-		System.out.println(number);	// Debugging
 		
 		String returnString = movementDirections[number];
 		
