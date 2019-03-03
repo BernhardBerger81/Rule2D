@@ -3,7 +3,7 @@ package com.rule2d.main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.sql.PreparedStatement;
+// import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.*;
 public class DBConnector {
 	private static Connection connection = null;
 	private static Statement statement = null;
-	private static PreparedStatement preparedStatement = null;
+	// private static PreparedStatement preparedStatement = null;
 	private static ResultSet resultSet = null;	
 	
 	public String queryDataBaseReturnString(String query) throws Exception {
@@ -86,7 +86,7 @@ public class DBConnector {
 		return resultString;
 	}
 	
-	public static void pingDatabase() throws Exception {
+	public void pingDatabase() throws Exception {
 		try {
 			// This will load the MySQL driver, each DB has its own driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
