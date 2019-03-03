@@ -46,7 +46,7 @@ public class Gameboard {
 		Rule2D.frame.repaint();
 	}
 	
-	public void paintMap(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int MAPDISPLAYWIDTH, int MAPDISPLAYHEIGHT, 
+	public void preparePaintMap(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int MAPDISPLAYWIDTH, int MAPDISPLAYHEIGHT, 
 			int BLOCKWIDTH,	int BLOCKHEIGHT) throws Exception {
 		// longitudeStart is the start coordinate of painting longitude map values on the screen
 		int longitudeStart = intPlayerLongitude - Rule2D.MAPDISPLAYWIDTHBLOCKS/2;
@@ -55,25 +55,20 @@ public class Gameboard {
 		int longitudeHolder = longitudeStart;
 		int latitudeHolder = latitudeStart;
 		
-		System.out.println("longitudeStart: " + longitudeStart); //Debugging
-		System.out.println("latitudeStart: " + latitudeStart); //Debugging
-		System.out.println("--------------------------------"); // Debugging
-		
-		// Paint the whole map in one go if longitudeStart >= 0 AND longitudeStart + MAPDISPLAYWIDTHBLOCKS < MAPWIDTH
-		// Paint the whole map if no "border" is crossed, neither to the West or the East
-		if (longitudeStart >= 0 && longitudeStart + Rule2D.MAPDISPLAYWIDTHBLOCKS < Rule2D.MAPWIDTH) {
-			System.out.println("If part"); // Debugging
-			
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///// Paint the whole map if no "border" is crossed, neither to the West or the East:                            /////
+		///// Paint the whole map in one go if longitudeStart >= 0 AND longitudeStart + MAPDISPLAYWIDTHBLOCKS < MAPWIDTH /////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+		if (longitudeStart >= 0 && longitudeStart + Rule2D.MAPDISPLAYWIDTHBLOCKS < Rule2D.MAPWIDTH) {			
 			// Special case: In the North of the map
 			// The map has to stay still if latitudeStart is < MAPDISPLAYHEIGHT/2
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
-				System.out.println("Special case North, if part"); //Debugging
 				latitudeStart = 0;
-			} 
+			}
+			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
 			else if (intPlayerLatitude + Rule2D.MAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
-				System.out.println("Special case South, if part"); // Debugging
 				int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
@@ -84,29 +79,19 @@ public class Gameboard {
 				// the player position indicator is near the edge of the map
 				if (intArray[Rule2D.MAPHEIGHT - intPlayerLatitude] >= 1) {
 					latitudeStart = latitudeStart - intArray[Rule2D.MAPHEIGHT - intPlayerLatitude];
-					System.out.println("latitudeStart corrected: " + latitudeStart); // Debugging
 					latitudeHolder = latitudeStart;
 				}
 			} 
 			// Normal case: In the middle of the map
 			else {
-				System.out.println("Normal case, if part"); // Debugging
+				// Nothing needs to happen here
 			}
 			
 			// We have determined the values of longitudeStart and latitudeStart. Now it's time to paint the map
 			// Paint left-to-right (longitude) and top-to-bottom (latitude) in preparation for isometric display
 			for (int latitudeCounter = 0; latitudeCounter < Rule2D.MAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
 				for (int longitudeCounter = 0; longitudeCounter < Rule2D.MAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					// Stylesheet allows stringToColor conversion of the color name loaded from the array
-					StyleSheet stylesheet = new StyleSheet();
-					
-					String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
-					Color color = stylesheet.stringToColor(colorString);
-					g2d.setColor(color);
-
-					g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
-					g2d.setColor(Color.PINK); // Debugging
-					g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
+					paintMap(g2d, longitudeStart, latitudeStart, longitudeCounter, latitudeCounter, BLOCKWIDTH, BLOCKHEIGHT);
 					
 					longitudeStart++;
 				}
@@ -115,23 +100,20 @@ public class Gameboard {
 				longitudeStart = longitudeHolder;
 			}
 		} else if (longitudeStart <= -1) {
-			// Paint the map in two parts if longitudeStart <= -1
-			// Paint the map in two parts if the border is crossed to the West
-			// System.out.println("Crossing border in the west");
-			System.out.println("Else if part"); // Debugging
-			System.out.println("longitudeStart: " + longitudeStart); //Debugging
-			System.out.println("latitudeStart: " + latitudeStart); //Debugging
-			System.out.println("--------------------------------"); // Debugging
+			///////////////////////////////////////////////////////////////////////////
+			///// Paint the map in two parts if the border is crossed to the West /////
+			///// Paint the map in two parts if longitudeStart <= -1              /////
+			///////////////////////////////////////////////////////////////////////////
 			
 			// Special case: In the North of the map
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
-				System.out.println("Special case North, else if part"); // Debugging
+				// System.out.println("Special case North, else if part"); // Debugging
 				latitudeStart = 0;
-			}			
+			}
+			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
 			else if (intPlayerLatitude + Rule2D.MAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
-				System.out.println("Special case South, else if part"); // Debugging
 				int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
@@ -142,38 +124,19 @@ public class Gameboard {
 				// the player position indicator is near the edge of the map
 				if (intArray[Rule2D.MAPHEIGHT - intPlayerLatitude] >= 1) {
 					latitudeStart = latitudeStart - intArray[Rule2D.MAPHEIGHT - intPlayerLatitude];
-					System.out.println("latitudeStart corrected: " + latitudeStart); // Debugging
 					latitudeHolder = latitudeStart;
 				}
 			} else {
-				System.out.println("Normal case, else if part"); // Debugging
+				// Nothing needs to happen here
 			}
 			
 			// Normal case: In the middle of the map
 			// Paint the Western half of the map			
 			longitudeStart = longitudeStart + Rule2D.MAPWIDTH;
 			
-			// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
-			// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging
-			// System.out.println("longitudeStart: " + longitudeStart); // Debugging
-			// System.out.println("longitudeHolder: " + longitudeHolder); // Debugging
-			
 			for (int latitudeCounter = 0; latitudeCounter < Rule2D.MAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
-				for (int longitudeCounter = 0; longitudeCounter < Math.abs(longitudeHolder); longitudeCounter++) {					
-					// Stylesheet allows stringToColor conversion of the color name loaded from the array
-					StyleSheet stylesheet = new StyleSheet();
-					
-					// System.out.println("longitude: " + longitudeCounter); // Debugging
-					// System.out.println("longitudeStart: " + longitudeStart); // Debugging
-					// System.out.println("latitudeStart: " + latitudeStart); // Debugging
-					
-					String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
-					Color color = stylesheet.stringToColor(colorString);
-					g2d.setColor(color);					
-
-					g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
-					g2d.setColor(Color.PINK); // Debugging
-					g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
+				for (int longitudeCounter = 0; longitudeCounter < Math.abs(longitudeHolder); longitudeCounter++) {
+					paintMap(g2d, longitudeStart, latitudeStart, longitudeCounter, latitudeCounter, BLOCKWIDTH, BLOCKHEIGHT);
 					
 					longitudeStart++;
 				}
@@ -189,49 +152,24 @@ public class Gameboard {
 			
 			// Special case: In the North of the map
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
-				System.out.println("Special case North, else if part"); // Debugging
+				// System.out.println("Special case North, else if part"); // Debugging
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
 			else if (intPlayerLatitude + Rule2D.MAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
-				System.out.println("Special case South, else if part"); // Debugging
+				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
-				/*int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
-				int intArray[] = new int[arrayLength];
-				for (int i = 0; i < arrayLength; i++) {
-					intArray[i] = arrayLength - i;
-				}
-				
-				// Set the latitudeStart for painting the map so that the map is drawn in it's full height even if 
-				// the player position indicator is near the edge of the map
-				if (intArray[Rule2D.MAPHEIGHT - intPlayerLatitude] >= 1) {
-					latitudeStart = latitudeStart - intArray[Rule2D.MAPHEIGHT - intPlayerLatitude];
-					System.out.println("latitudeStart corrected: " + latitudeStart); // Debugging
-					latitudeHolder = latitudeStart;
-				}*/
 			} else {
 				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
 			}
 			
-			System.out.println("latitudeStart: " + latitudeStart); // Debugging
-			System.out.println("latitudeHolder: " + latitudeHolder); // Debugging			
-			
 			for (int latitudeCounter = 0; latitudeCounter < Rule2D.MAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
 				for (int longitudeCounter = Math.abs(longitudeHolder); longitudeCounter < Rule2D.MAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					// Stylesheet allows stringToColor conversion of the color name loaded from the array
-					StyleSheet stylesheet = new StyleSheet();
-					
-					String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
-					Color color = stylesheet.stringToColor(colorString);
-					g2d.setColor(color);					
+					paintMap(g2d, longitudeStart, latitudeStart, longitudeCounter, latitudeCounter, BLOCKWIDTH, BLOCKHEIGHT);
 
-					g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
-					g2d.setColor(Color.PINK); // Debugging
-					g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
-					
 					longitudeStart++;
 				}
 				latitudeStart++;
@@ -239,22 +177,18 @@ public class Gameboard {
 				longitudeStart = 0;
 			}
 		} else {
-			// Paint the map in two parts			
-			System.out.println("Else part"); // Debugging
-			System.out.println("longitudeStart: " + longitudeStart); //Debugging
-			System.out.println("latitudeStart: " + latitudeStart); //Debugging
-			System.out.println("--------------------------------"); // Debugging
+			///////////////////////////////////////////////////////////////////////////
+			///// Paint the map in two parts if the border is crossed to the East /////
+			///////////////////////////////////////////////////////////////////////////
 			
 			// Special case: In the North of the map
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
-				System.out.println("Special case North, else part"); // Debugging
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
 			if (intPlayerLatitude + Rule2D.MAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
-				System.out.println("Special case South, else part"); // Debugging
 				int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
@@ -265,31 +199,16 @@ public class Gameboard {
 				// the player position indicator is near the edge of the map
 				if (intArray[Rule2D.MAPHEIGHT - intPlayerLatitude] >= 1) {
 					latitudeStart = latitudeStart - intArray[Rule2D.MAPHEIGHT - intPlayerLatitude];
-					System.out.println("latitudeStart corrected: " + latitudeStart); // Debugging
 					latitudeHolder = latitudeStart;
 				}
 			}
 			
 			// Normal case: In the middle of the map
-			System.out.println("Normal case, else part");
 			// Paint the Western half of the map
 			for (int latitudeCounter = 0; latitudeCounter < Rule2D.MAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
-				for (int longitudeCounter = 0; longitudeStart < Rule2D.MAPWIDTH; longitudeCounter++) {					
-					// Stylesheet allows stringToColor conversion of the color name loaded from the array
-					StyleSheet stylesheet = new StyleSheet();
-					
-					// System.out.println("longitude: " + longitudeCounter); // Debugging
-					// System.out.println("longitudeStart: " + longitudeStart); // Debugging
-					// System.out.println("latitudeStart: " + latitudeStart); // Debugging
-					
-					String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
-					Color color = stylesheet.stringToColor(colorString);
-					g2d.setColor(color);					
+				for (int longitudeCounter = 0; longitudeStart < Rule2D.MAPWIDTH; longitudeCounter++) {
+					paintMap(g2d, longitudeStart, latitudeStart, longitudeCounter, latitudeCounter, BLOCKWIDTH, BLOCKHEIGHT);
 
-					g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
-					g2d.setColor(Color.PINK); // Debugging
-					g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
-					
 					longitudeStart++;
 				}
 				latitudeStart++;
@@ -304,28 +223,14 @@ public class Gameboard {
 
 			// Special case: In the North of the map
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
-				System.out.println("Special case North, else if part"); // Debugging
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
 			else if (intPlayerLatitude + Rule2D.MAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
-				System.out.println("Special case South, else if part"); // Debugging
+				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
-				/*int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
-				int intArray[] = new int[arrayLength];
-				for (int i = 0; i < arrayLength; i++) {
-					intArray[i] = arrayLength - i;
-				}
-				
-				// Set the latitudeStart for painting the map so that the map is drawn in it's full height even if 
-				// the player position indicator is near the edge of the map
-				if (intArray[Rule2D.MAPHEIGHT - intPlayerLatitude] >= 1) {
-					latitudeStart = latitudeStart - intArray[Rule2D.MAPHEIGHT - intPlayerLatitude];
-					System.out.println("latitudeStart corrected: " + latitudeStart); // Debugging
-					latitudeHolder = latitudeStart;
-				}*/
 			} else {
 				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
@@ -333,17 +238,8 @@ public class Gameboard {
 			
 			for (int latitudeCounter = 0; latitudeCounter < Rule2D.MAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
 				for (int longitudeCounter = Rule2D.MAPWIDTH - longitudeHolder; longitudeCounter < Rule2D.MAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					// Stylesheet allows stringToColor conversion of the color name loaded from the array
-					StyleSheet stylesheet = new StyleSheet();
-					
-					String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
-					Color color = stylesheet.stringToColor(colorString);
-					g2d.setColor(color);					
+					paintMap(g2d, longitudeStart, latitudeStart, longitudeCounter, latitudeCounter, BLOCKWIDTH, BLOCKHEIGHT);
 
-					g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
-					g2d.setColor(Color.PINK); // Debugging
-					g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
-					
 					longitudeStart++;
 				}
 				latitudeStart++;
@@ -351,6 +247,20 @@ public class Gameboard {
 				longitudeStart = 0;
 			}
 		}
+	}
+	
+	public void paintMap(Graphics2D g2d, int longitudeStart, int latitudeStart, int longitudeCounter, int latitudeCounter, 
+			int BLOCKWIDTH, int BLOCKHEIGHT) {
+		// Stylesheet allows stringToColor conversion of the color name loaded from the array
+		StyleSheet stylesheet = new StyleSheet();
+		
+		String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
+		Color color = stylesheet.stringToColor(colorString);
+		g2d.setColor(color);					
+
+		g2d.fillRect(longitudeCounter*BLOCKWIDTH, latitudeCounter*BLOCKHEIGHT + 200, BLOCKWIDTH, BLOCKHEIGHT);
+		g2d.setColor(Color.PINK); // Debugging
+		g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter*BLOCKWIDTH + 10, latitudeCounter*BLOCKHEIGHT + 230); // Debugging
 	}
 	
 	public void paintPlayerPosition(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT,

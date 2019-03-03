@@ -22,7 +22,7 @@ public class ScreenControl {
 			case "ShowMap":
 				// Paint the map on the screen.
 				try {
-					gameboard.paintMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+					gameboard.preparePaintMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
