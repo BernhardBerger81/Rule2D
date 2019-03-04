@@ -133,7 +133,7 @@ public class KeyboardControl {
 				///// Move backwards while facing South East /////
 				//////////////////////////////////////////////////
 				case "SE":
-					if (Rule2D.intPlayerLatitude - 1 <= 0) {
+					if (Rule2D.intPlayerLatitude - 1 < 0) {
 						// Walking over the edge of the map, we arrive on the other side of the globe via the pole
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -159,7 +159,7 @@ public class KeyboardControl {
 				///// Move backwards while facing South /////
 				/////////////////////////////////////////////
 				case "S":
-					if (Rule2D.intPlayerLatitude - 1 <= 0) {
+					if (Rule2D.intPlayerLatitude - 1 < 0) {
 						// Walking over the edge of the map, we arrive at the other side of the globe via the pole.
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -185,7 +185,7 @@ public class KeyboardControl {
 				///// Move backwards while facing South West /////
 				//////////////////////////////////////////////////
 				case "SW":
-					if (Rule2D.intPlayerLatitude - 1 <= 0) {
+					if (Rule2D.intPlayerLatitude - 1 < 0) {
 						// Walking over the edge of the map, we arrive on the other side of the globe via the pole
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -321,9 +321,9 @@ public class KeyboardControl {
 			Rule2D.frame.repaint();
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////
-		///// Pass a tick of time. TODO: Pressing keypad 5 pauses the game a tick. /////
-		///////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////
+		///// Pass a tick of time. TODO: Pressing keypad 5 passes a tick. /////
+		///////////////////////////////////////////////////////////////////////
 		if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {			
 			// System.out.println(e.getKeyCode()); // Debugging
 			System.out.println("Pausing a tic. No functionality yet!!!!!!!"); // Debugging
@@ -470,7 +470,7 @@ public class KeyboardControl {
 				///// Move forward while facing South East /////
 				////////////////////////////////////////////////
 				case "SE":
-					if (Rule2D.intPlayerLatitude + 1 > Rule2D.MAPHEIGHT) {
+					if (Rule2D.intPlayerLatitude + 1 >= Rule2D.MAPHEIGHT) {
 						// Walking over the edge of the map, we arrive on the other side of the globe via the pole
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -502,7 +502,7 @@ public class KeyboardControl {
 				///// Move forward while facing South /////
 				/////////////////////////////////////////////
 				case "S":
-					if (Rule2D.intPlayerLatitude + 1 > Rule2D.MAPHEIGHT) {
+					if (Rule2D.intPlayerLatitude + 1 >= Rule2D.MAPHEIGHT) {
 						// Walking over the edge of the map, we arrive at the other side of the globe via the pole.
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);
@@ -528,7 +528,7 @@ public class KeyboardControl {
 				///// Move forward while facing South West /////
 				//////////////////////////////////////////////////
 				case "SW":
-					if (Rule2D.intPlayerLatitude + 1 > Rule2D.MAPHEIGHT) {
+					if (Rule2D.intPlayerLatitude + 1 >= Rule2D.MAPHEIGHT) {
 						// Walking over the edge of the map, we arrive on the other side of the globe via the pole
 						if (Rule2D.intPlayerLongitude - Rule2D.MAPWIDTH/2 < 0) {
 							Rule2D.intPlayerLongitude = Rule2D.MAPWIDTH - (Rule2D.MAPWIDTH/2 - Rule2D.intPlayerLongitude);

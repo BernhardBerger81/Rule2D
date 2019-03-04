@@ -6,12 +6,12 @@ import java.awt.Polygon;
 import java.util.Random;
 import javax.swing.text.html.StyleSheet;
 
-public class Gameboard {	
+public class Gameboard {
 	private Rule2D game;
 
 	public Gameboard(Rule2D game) {
 		this.game = game;
-	}	
+	}
 
 	public void generateMap(int MAPWIDTH, int MAPHEIGHT) throws Exception {
 		// Load the terrain data into an array to reduce database connections
@@ -251,7 +251,7 @@ public class Gameboard {
 	
 	public void paintMap(Graphics2D g2d, int longitudeStart, int latitudeStart, int longitudeCounter, int latitudeCounter, 
 			int BLOCKWIDTH, int BLOCKHEIGHT) {
-		// Stylesheet allows stringToColor conversion of the color name loaded from the array
+		// StyleSheet allows stringToColor conversion of the color name loaded from the array
 		StyleSheet stylesheet = new StyleSheet();
 		
 		String colorString = Rule2D.mapCoordinatesTerrain[longitudeStart][latitudeStart];
@@ -265,12 +265,17 @@ public class Gameboard {
 	
 	public void paintPlayerPosition(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT,
 			int MAPDISPLAYWIDTH, int MAPDISPLAYHEIGHT, int MAPHEIGHT) {
+		
+		// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
+		System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging		
+		
+		// Set the color to WHITE
 		g2d.setColor(Color.WHITE);
+		// The player's position is shown as a white dot with a diameter of 20px.
 		// Make the oval a circle by setting equal x and y values.
 		int ovalX = 20;
-		int ovalY = 20;
+		int ovalY = 20;		
 		
-		// The player's position is shown as a white dot with a diameter of 20px.
 		// The dot's coordinates are multiples of the BLOCKWIDTH and BLOCKHEIGHT.
 		// The correctional factor "correctFactor" makes sure that the player position is in the middle of the block.
 		// The correctional factor for width is half the BLOCKWIDTH plus half the oval's x value.
@@ -280,6 +285,7 @@ public class Gameboard {
 		
 		// The player position moves in the North half of the map if intPlayerLatitude <= MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
 		if (intPlayerLatitude < MAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
+			System.out.println("The player is in the North half of the map."); // Debugging
 			// Special case multiplication by zero (0)
 			if (intPlayerLatitude == 0) {
 				g2d.fillOval((BLOCKWIDTH * MAPDISPLAYWIDTH/BLOCKWIDTH/2) - correctFactorW + BLOCKWIDTH/2,
@@ -292,8 +298,9 @@ public class Gameboard {
 			}			
 		}
 		// The player position moves in the South half of the map if intPlayerLatitude > MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
-		else if (intPlayerLatitude > MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
-			int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2;
+		else if (intPlayerLatitude >= MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
+			System.out.println("The player is in the South half of the map"); // Debugging
+			int arrayLength = MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
 			int intArray[] = new int[arrayLength];
 			for (int i = 0; i < arrayLength; i++) {
 				intArray[i] = arrayLength - i;
@@ -307,6 +314,7 @@ public class Gameboard {
 		}
 		// The player position stays in the middle of the map in all other cases
 		else {
+			System.out.println("The player is in the middle of the map"); // Debugging
 			g2d.fillOval((BLOCKWIDTH * MAPDISPLAYWIDTH/BLOCKWIDTH/2) - correctFactorW + BLOCKWIDTH/2,
 					 (BLOCKHEIGHT * (MAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1) + 200) - correctFactorH,
 					 ovalX, ovalY);
