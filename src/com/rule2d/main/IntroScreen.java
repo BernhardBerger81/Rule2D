@@ -61,6 +61,25 @@ public class IntroScreen {
 		
 		// Now, create the button
 		drawButton(g2d, buttonText, buttonBackgroundColor, textColor, xStartButton, yStartButton, buttonWidth, buttonHeight);
+		
+		//////////////////////////////////////////////////
+		///// TEMP button for isometric map creation /////
+		//////////////////////////////////////////////////
+		// Button color
+		buttonBackgroundColor = new Color(220, 220, 220); // Grey
+		// Button start coordinates
+		xStartButton = 0;
+		yStartButton = 150;
+		// Button dimensions
+		buttonWidth = 200;
+		buttonHeight = 100;
+		// Text color
+		textColor = new Color(225, 0, 0); // Red
+		// Button text
+		buttonText = "Create isometric map";
+		
+		// Now, create the button
+		drawButton(g2d, buttonText, buttonBackgroundColor, textColor, xStartButton, yStartButton, buttonWidth, buttonHeight);
 	}
 	
 	public static void drawButton(Graphics2D g2d, String buttonText, Color buttonBackgroundColor, Color textColor, int xStartButton, int yStartButton,

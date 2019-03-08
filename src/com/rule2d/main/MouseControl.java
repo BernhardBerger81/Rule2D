@@ -21,19 +21,24 @@ public class MouseControl {
 	}
 	
 	public void windowStatusIntroScreen(MouseEvent mouseEvent) {
+		// Button "Create Map" clicked
 		if (mouseEvent.getX() >= 0 && mouseEvent.getX() <= 200) {
-			// Button "Create Map" clicked
 			if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
 				Rule2D.windowStatus = "CreateMap";
 				Rule2D.frame.repaint();
 			}
-			// Button "Create Character" clicked
+			// Button "Create isometric map" clicked	
+			if(mouseEvent.getY() >= 150 && mouseEvent.getY() <= 250) {
+				Rule2D.windowStatus = "CreateIsometricMap";
+				Rule2D.frame.repaint();
+			}
+		// Button "Create Character" clicked
 		} else if (mouseEvent.getX() >= 250 && mouseEvent.getX() <= 450) {
 			if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
 				Rule2D.windowStatus = "CreateCharacter";
 				Rule2D.frame.repaint();
 			}
-			// Button "Create monster" clicked
+		// Button "Create monster" clicked
 		} else if (mouseEvent.getX() >= 500 && mouseEvent.getX() <= 700) {
 			if (mouseEvent.getY() >= 0 && mouseEvent.getY() <= 100) {
 				Rule2D.windowStatus = "CreateMonster";

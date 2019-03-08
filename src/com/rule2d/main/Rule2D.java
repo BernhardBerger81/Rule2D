@@ -20,6 +20,8 @@ public class Rule2D extends JPanel {
 	public final static int BLOCKHEIGHT = 50; // Setting
 	public final static int MAPDISPLAYWIDTHBLOCKS = 17; // Setting
 	public final static int MAPDISPLAYHEIGHTBLOCKS = 13; // Setting
+	public final static int ISOMAPDISPLAYWIDTHBLOCKS = MAPDISPLAYWIDTHBLOCKS; // Setting
+	public final static int ISOMAPDISPLAYHEIGHTBLOCKS = MAPDISPLAYHEIGHTBLOCKS * 2; // Setting // We can paint double the blocks on an isometric map
 	public final static int SCREENRESWIDTH  = 1200; // Setting
 	public final static int SCREENRESHEIGHT = 900; // Setting
 	public final static int MAPDISPLAYWIDTH = MAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
@@ -44,6 +46,7 @@ public class Rule2D extends JPanel {
 	public static String windowStatus = "IntroScreen";
 
 	Gameboard gameboard = new Gameboard(this);
+	IsometricMap isometricMap = new IsometricMap(this);
 	// Create and set up the window		
 	public static JFrame frame = new JFrame("Rule2D");
 	
@@ -99,7 +102,7 @@ public class Rule2D extends JPanel {
 		try {
 			// Load the intro screen.
 			ScreenControl screenControl = new ScreenControl();
-			screenControl.doScreenControl(g2d, windowStatus, gameboard, MAPWIDTH, MAPHEIGHT, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT,
+			screenControl.doScreenControl(g2d, windowStatus, gameboard, isometricMap, MAPWIDTH, MAPHEIGHT, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT,
 					BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

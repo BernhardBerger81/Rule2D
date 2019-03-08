@@ -3,7 +3,7 @@ package com.rule2d.main;
 import java.awt.Graphics2D;
 
 public class ScreenControl {
-	public void doScreenControl(Graphics2D g2d, String windowStatus, Gameboard gameboard, int MAPWIDTH, int MAPHEIGHT, int MAPDISPLAYWIDTH,
+	public void doScreenControl(Graphics2D g2d, String windowStatus, Gameboard gameboard, IsometricMap isometricMap, int MAPWIDTH, int MAPHEIGHT, int MAPDISPLAYWIDTH,
 			int MAPDISPLAYHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT, int intPlayerLongitude, int intPlayerLatitude) {
 		switch(windowStatus) {
 			case "IntroScreen":
@@ -39,6 +39,15 @@ public class ScreenControl {
 			case "CreateMonster":
 				// Show the monster creation screen
 				gameboard.createMonster(g2d);
+				break;
+			case "CreateIsometricMap":
+				// Paint the ISOMETRIC map on the screen
+				try {
+					isometricMap.preparePaintIsometricMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 		}		
 	}
