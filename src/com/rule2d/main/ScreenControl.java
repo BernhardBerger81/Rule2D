@@ -4,14 +4,14 @@ import java.awt.Graphics2D;
 
 public class ScreenControl {
 	public void doScreenControl(Graphics2D g2d, String windowStatus, Gameboard gameboard, IsometricMap isometricMap, int MAPWIDTH, int MAPHEIGHT, int MAPDISPLAYWIDTH,
-			int MAPDISPLAYHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT, int intPlayerLongitude, int intPlayerLatitude) {
+			int MAPDISPLAYHEIGHT, int ISOMAPDISPLAYWIDTH, int ISOMAPDISPLAYHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT, int intPlayerLongitude, int intPlayerLatitude) {
 		switch(windowStatus) {
 			case "IntroScreen":
 				// Load the intro screen
 				IntroScreen.paintIntroScreen(g2d);
 				break;
 			case "CreateMap":
-				// Generate the map. Fill array mapCoordinatesTerrain.
+				// Generate the map. Fill array mapCoordinatesTerrain
 				try {
 					gameboard.generateMap(MAPWIDTH, MAPHEIGHT);
 				} catch (Exception e) {
@@ -19,8 +19,8 @@ public class ScreenControl {
 					e.printStackTrace();
 				}
 				break;
-			case "ShowMap":
-				// Paint the map on the screen.
+			case "ShowSquareBasedMap":
+				// Paint the SQUARE BASED map on the screen.
 				try {
 					gameboard.preparePaintMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 				} catch (Exception e) {
@@ -28,7 +28,7 @@ public class ScreenControl {
 					e.printStackTrace();
 				}
 				
-				// Paint the player position on the map.
+				// Paint the player position on the map
 				gameboard.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT, 
 						MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, MAPHEIGHT);
 				break;
@@ -41,14 +41,28 @@ public class ScreenControl {
 				gameboard.createMonster(g2d);
 				break;
 			case "CreateIsometricMap":
-				// Paint the ISOMETRIC map on the screen
+				// Generate the map. Fill array mapCoordinatesTerrain	
 				try {
-					isometricMap.preparePaintIsometricMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
+					isometricMap.generateIsometricMap(MAPWIDTH, MAPHEIGHT);
+					// isometricMap.preparePaintIsometricMap(g2d, intPlayerLongitude, intPlayerLatitude, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
+			case "ShowIsometricMap":
+				// Paint the ISOMETRIC map on the screen
+				try {
+					isometricMap.preparePaintIsometricMap(g2d, intPlayerLongitude, intPlayerLatitude, ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, 
+							BLOCKWIDTH, BLOCKHEIGHT);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// Paint the player position on the map
+				isometricMap.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT, 
+						ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, MAPHEIGHT);
 		}		
 	}
 }

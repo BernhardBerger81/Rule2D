@@ -42,7 +42,7 @@ public class Gameboard {
 			}
 		}
 		
-		Rule2D.windowStatus = "ShowMap";
+		Rule2D.windowStatus = "ShowSquareBasedMap";
 		Rule2D.frame.repaint();
 	}
 	
@@ -267,7 +267,7 @@ public class Gameboard {
 			int MAPDISPLAYWIDTH, int MAPDISPLAYHEIGHT, int MAPHEIGHT) {
 		
 		// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
-		System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging		
+		// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging		
 		
 		// Set the color to WHITE
 		g2d.setColor(Color.WHITE);
@@ -466,7 +466,7 @@ public class Gameboard {
 	private String getTerrainColor(int pkTerrain) throws Exception {
 		DBConnector dbConnector = new DBConnector();
 		String terrainColor = dbConnector.queryDataBaseReturnString("SELECT terrainColor FROM Terrain WHERE pkTerrain = " + pkTerrain);
-				
+		
 		return terrainColor;
 	}
 	
