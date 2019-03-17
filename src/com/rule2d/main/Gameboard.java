@@ -58,8 +58,8 @@ public class Gameboard {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		///// Paint the whole map if no "border" is crossed, neither to the West or the East:                            /////
 		///// Paint the whole map in one go if longitudeStart >= 0 AND longitudeStart + MAPDISPLAYWIDTHBLOCKS < MAPWIDTH /////
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-		if (longitudeStart >= 0 && longitudeStart + Rule2D.MAPDISPLAYWIDTHBLOCKS < Rule2D.MAPWIDTH) {			
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (longitudeStart >= 0 && longitudeStart + Rule2D.MAPDISPLAYWIDTHBLOCKS < Rule2D.MAPWIDTH) {
 			// Special case: In the North of the map
 			// The map has to stay still if latitudeStart is < MAPDISPLAYHEIGHT/2
 			if (intPlayerLatitude < Rule2D.MAPDISPLAYHEIGHTBLOCKS/2) {
@@ -286,7 +286,7 @@ public class Gameboard {
 		// The player position moves in the North half of the map if intPlayerLatitude <= MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
 		if (intPlayerLatitude < MAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
 			System.out.println("The player is in the North half of the map."); // Debugging
-			// Special case multiplication by zero (0)
+			// Special case multiplication with zero (0)
 			if (intPlayerLatitude == 0) {
 				g2d.fillOval((BLOCKWIDTH * MAPDISPLAYWIDTH/BLOCKWIDTH/2) - correctFactorW + BLOCKWIDTH/2,
 						 (BLOCKHEIGHT + 200) - correctFactorH,
@@ -295,7 +295,7 @@ public class Gameboard {
 				g2d.fillOval((BLOCKWIDTH * MAPDISPLAYWIDTH/BLOCKWIDTH/2) - correctFactorW + BLOCKWIDTH/2,
 					 (BLOCKHEIGHT * (intPlayerLatitude + 1) + 200) - correctFactorH,
 					 ovalX, ovalY);
-			}			
+			}
 		}
 		// The player position moves in the South half of the map if intPlayerLatitude > MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
 		else if (intPlayerLatitude >= MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {

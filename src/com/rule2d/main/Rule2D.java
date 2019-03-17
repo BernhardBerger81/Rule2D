@@ -43,7 +43,7 @@ public class Rule2D extends JPanel {
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
 	// public static String characterDirection = randomCharacterStartingDirection(); // Not a setting
 	// For testing purposes, set the starting characterDirection to a fixed value
-	public static String characterDirection = "S"; // Not a setting // Debugging
+	public static String characterDirection = "N"; // Not a setting // Debugging
 	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
 	public static String windowStatus = "IntroScreen";
 
