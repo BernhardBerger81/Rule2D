@@ -18,6 +18,8 @@ public class Rule2D extends JPanel {
 	// Settings. TODO: Move to settings file.
 	public final static int BLOCKWIDTH  = 50; // Setting
 	public final static int BLOCKHEIGHT = 50; // Setting
+	public final static int ISOBLOCKWIDTH = 80; // Setting
+	public final static int ISOBLOCKHEIGHT = 80; // Setting
 	public final static int MAPDISPLAYWIDTHBLOCKS = 17; // Setting
 	public final static int MAPDISPLAYHEIGHTBLOCKS = 13; // Setting
 	public final static int ISOMAPDISPLAYWIDTHBLOCKS = MAPDISPLAYWIDTHBLOCKS; // Setting
@@ -30,6 +32,7 @@ public class Rule2D extends JPanel {
 	public final static int ISOMAPDISPLAYHEIGHT = ISOMAPDISPLAYHEIGHTBLOCKS * BLOCKHEIGHT; // Setting
 	public final static int MAPWIDTH = 20; // Setting // Has to be even number!!!
 	public final static int MAPHEIGHT = 32; // Setting // Has to be even number!!!
+	public final static int MAXELEVATION = 1; // Setting
 
 	public final static int characterDirectionIndicatorHeight = 20; // Setting
 	public final static double startingMapZoomFactor = 1; // Setting
@@ -38,6 +41,7 @@ public class Rule2D extends JPanel {
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
+	public static int[][] mapCoordinatesElevation = new int[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => elevation // Not a setting
 	public static int intPlayerLongitude = 8; // Not a setting // TODO: Randomize player starting position
 	public static int intPlayerLatitude = 13; // Not a setting // TODO: Randomize player starting position
 	public final static String[] movementDirections = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}; // Not a setting -> That's debatable!!!
@@ -105,7 +109,7 @@ public class Rule2D extends JPanel {
 			// Load the intro screen.
 			ScreenControl screenControl = new ScreenControl();
 			screenControl.doScreenControl(g2d, windowStatus, gameboard, isometricMap, MAPWIDTH, MAPHEIGHT, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT,
-					ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
+					ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT, ISOBLOCKWIDTH, ISOBLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

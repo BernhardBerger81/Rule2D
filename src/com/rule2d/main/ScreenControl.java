@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 public class ScreenControl {
 	public void doScreenControl(Graphics2D g2d, String windowStatus, Gameboard gameboard, IsometricMap isometricMap, int MAPWIDTH, int MAPHEIGHT, int MAPDISPLAYWIDTH,
-			int MAPDISPLAYHEIGHT, int ISOMAPDISPLAYWIDTH, int ISOMAPDISPLAYHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT, int intPlayerLongitude, int intPlayerLatitude) {
+			int MAPDISPLAYHEIGHT, int ISOMAPDISPLAYWIDTH, int ISOMAPDISPLAYHEIGHT, int BLOCKWIDTH, int BLOCKHEIGHT, int ISOBLOCKWIDTH, int ISOBLOCKHEIGHT, int intPlayerLongitude, int intPlayerLatitude) {
 		switch(windowStatus) {
 			case "IntroScreen":
 				// Load the intro screen
@@ -54,14 +54,14 @@ public class ScreenControl {
 				// Paint the ISOMETRIC map on the screen
 				try {
 					isometricMap.preparePaintIsometricMap(g2d, intPlayerLongitude, intPlayerLatitude, ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, 
-							BLOCKWIDTH, BLOCKHEIGHT);
+							ISOBLOCKWIDTH, ISOBLOCKHEIGHT);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 				// Paint the player position on the map
-				isometricMap.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, BLOCKWIDTH, BLOCKHEIGHT, 
+				isometricMap.paintPlayerPosition(g2d, intPlayerLongitude, intPlayerLatitude, ISOBLOCKWIDTH, ISOBLOCKHEIGHT, 
 						ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, MAPHEIGHT);
 		}		
 	}
