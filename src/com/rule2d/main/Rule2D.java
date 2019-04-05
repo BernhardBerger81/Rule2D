@@ -2,6 +2,8 @@ package com.rule2d.main;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -24,8 +26,8 @@ public class Rule2D extends JPanel {
 	public final static int MAPDISPLAYHEIGHTBLOCKS = 13; // Setting
 	public final static int ISOMAPDISPLAYWIDTHBLOCKS = MAPDISPLAYWIDTHBLOCKS; // Setting
 	public final static int ISOMAPDISPLAYHEIGHTBLOCKS = MAPDISPLAYHEIGHTBLOCKS * 2; // Setting // We can paint double the blocks on an isometric map
-	public final static int SCREENRESWIDTH  = 1200; // Setting
-	public final static int SCREENRESHEIGHT = 900; // Setting
+	// public final static int SCREENRESWIDTH  = 1200; // Setting
+	// public final static int SCREENRESHEIGHT = 900; // Setting
 	public final static int MAPDISPLAYWIDTH = MAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
 	public final static int MAPDISPLAYHEIGHT = MAPDISPLAYHEIGHTBLOCKS * BLOCKHEIGHT; // Setting
 	public final static int ISOMAPDISPLAYWIDTH = ISOMAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
@@ -131,8 +133,21 @@ public class Rule2D extends JPanel {
 		Rule2D game = new Rule2D();
 		
 		frame.add(game);
-		// Adjust the width and height of the frame to accommodate the strange fact that the blocks don't fit into the frame...  
-		frame.setSize(SCREENRESWIDTH + 25, SCREENRESHEIGHT + 50); // TODO: Investigate why width and height need to be adjusted to fit the frame
+		// What's the screen size on a multi-monitor device?
+		// https://stackoverflow.com/questions/3680221/how-can-i-get-screen-resolution-in-java
+		GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int screenWidth = graphicsDevice.getDisplayMode().getWidth();
+		int screenHeight = graphicsDevice.getDisplayMode().getHeight();
+		System.out.println("Screen size: " + screenWidth + "x" + screenHeight); // Debugging
+		
+		// Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		// int screenWidth = (int) screensize.getWidth();
+		// int screenHeight = (int) screensize.getHeight();
+		// System.out.println("Screen size: " + screenWidth + "x" + screenHeight); // Debugging
+		// frame.setSize(screenWidth, screenHeight); // Don't use frame.setSize, it doesn't set the window to fullscreen correctly!!
+		
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setUndecorated(false); // "true" hides the title bar		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

@@ -338,7 +338,7 @@ public class IsometricMap {
 				// yTopTipCoordinate = yTopTipCoordinate - y/2 * height;
 				yTopTipCoordinate = latitudeCounter/2 * height/2 + 200;
 			}
-			System.out.println("x,yTopTipCoordinate even: " + xTopTipCoordinate + ", " + yTopTipCoordinate); // Debugging
+			// System.out.println("x,yTopTipCoordinate even: " + xTopTipCoordinate + ", " + yTopTipCoordinate); // Debugging
 			// System.out.println("if case yTopTipCoordinate: y = " + y + ", " + yTopTipCoordinate); // Debugging
 		} else {
 			yTopTipCoordinate = latitudeCounter * height - height/4*3 + 200 - 1;
@@ -348,7 +348,7 @@ public class IsometricMap {
 				// System.out.println("latitudeCounter: " + latitudeCounter); // Debugging
 				// System.out.println("latitudeMultiplier: " + latitudeMultiplier); // Debugging				
 			}
-			System.out.println("x,yTopTipCoordinate odd: " + xTopTipCoordinate + ", " + yTopTipCoordinate); // Debugging
+			// System.out.println("x,yTopTipCoordinate odd: " + xTopTipCoordinate + ", " + yTopTipCoordinate); // Debugging
 			
 			// System.out.println("latitudeCounter: " + latitudeCounter + ", yTopTipCoordinate: " + yTopTipCoordinate); // Debugging			
 			// System.out.println("else case yTopTipCoordinate: y = " + y + ", " + yTopTipCoordinate); // Debugging
