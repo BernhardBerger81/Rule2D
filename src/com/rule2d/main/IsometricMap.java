@@ -388,15 +388,16 @@ public class IsometricMap {
 		
 		g2d.setColor(Color.RED);
 		
-		boolean debugCoordinates = false;
-		boolean debugHeight = false;
+		// Debugging
+		boolean debugCoordinates = true;
+		boolean debugHeight = true;
 		
 		if (debugCoordinates == true) {
-			debugCoordinates(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, width, height);
+			debugCoordinates(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, width, height, latitudeMultiplier);
 		}
 		
 		if (debugHeight == true) {
-			debugHeight(g2d, longitudeCounter, latitudeCounter, latitudeStart, width, height);
+			debugHeight(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, width, height, latitudeMultiplier);
 		}
 	}
 	
@@ -480,7 +481,7 @@ public class IsometricMap {
 	}
 	
 	private void debugCoordinates(Graphics2D g2d, int longitudeCounter, int latitudeCounter, int longitudeStart, int latitudeStart, 
-			int width, int height) {
+			int width, int height, int latitudeMultiplier) {
 		// Print the field coordinates for debugging
 		// Check if y is even or odd. Odd y values mean that x has to go right the width of the isometric field
 		// Check if y is even or odd. Odd y values mean that y has to go down half the height of the isometric field		
@@ -488,46 +489,52 @@ public class IsometricMap {
 			// System.out.println("x*width: " + x*width + ", " + "y*height: " + y*height); // Debugging
 			if (latitudeStart == 0) {
 				// Print the map coordinates of the field
-				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + 13, latitudeCounter * height + 225); // Debugging
+				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + 25, latitudeCounter * height + 220); // Debugging
 			}			
 			if (latitudeStart >= 2) {
 				// Print the map coordinates of the field
-				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + 13, latitudeCounter/2*height + 225); // Debugging
+				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + 25, latitudeCounter/2*height/2 + 220); // Debugging
 			}
 		} else {
-			if (latitudeStart == 0) {
+			int latitudeCoordinateDraw = latitudeCounter * height - height/4*3 + 220;
+			if (latitudeStart == 1) {
 				// Print the map coordinates of the field
-				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + width/2 + 13, latitudeCounter * height - height/2 + 225); // Debugging
+				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + width/2 + 25, latitudeCoordinateDraw); // Debugging
+				System.out.println("Inside latitudeStart == 0"); // Debugging
 			}			
-			if (latitudeStart >= 1) {
+			if (latitudeStart >= 3) {
 				// Print the map coordinates of the field
-				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + width/2 + 13, (latitudeCounter + 1)/2*height - height/2 + 225); // Debugging
+				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + width/2 + 25, latitudeCoordinateDraw - height * 3/2 * latitudeMultiplier); // Debugging
 			}
 		}
 	}
 	
-	private void debugHeight(Graphics2D g2d, int longitudeCounter, int latitudeCounter, int latitudeStart, int width, int height) {
+	private void debugHeight(Graphics2D g2d, int longitudeCounter, int latitudeCounter, int longitudeStart, int latitudeStart, int width, int height, 
+			int latitudeMultiplier) {
 		// Print the field height for debugging
+		
+		String fieldHeight = Integer.toString(Rule2D.mapCoordinatesElevation[longitudeStart][latitudeStart]);
 		// Check if y is even or odd. Odd y values mean that x has to go right the width of the isometric field
 		// Check if y is even or odd. Odd y values mean that y has to go down half the height of the isometric field		
 		if (latitudeStart % 2 == 0) {
 			// System.out.println("x*width: " + x*width + ", " + "y*height: " + y*height); // Debugging
 			if (latitudeStart == 0) {
 				// Print the map coordinates of the field
-				g2d.drawString("0", longitudeCounter * width + 20, latitudeCounter * height + 237); // Debugging
+				g2d.drawString(fieldHeight, longitudeCounter * width + 35, latitudeCounter * height + 235); // Debugging
 			}			
 			if (latitudeStart >= 2) {
 				// Print the map coordinates of the field
-				g2d.drawString("0", longitudeCounter * width + 20, latitudeCounter/2*height + 237); // Debugging
+				g2d.drawString(fieldHeight, longitudeCounter * width + 35, latitudeCounter/2*height/2 + 235); // Debugging
 			}
 		} else {
-			if (latitudeStart == 0) {
+			int latitudeHeightDraw = latitudeCounter * height - height/4*3 + 235;
+			if (latitudeStart == 1) {
 				// Print the map coordinates of the field
-				g2d.drawString("0", longitudeCounter * width + width/2 + 20, latitudeCounter * height - height/2 + 237); // Debugging
+				g2d.drawString(fieldHeight, longitudeCounter * width + width/2 + 35, latitudeHeightDraw); // Debugging
 			}			
-			if (latitudeStart >= 1) {
+			if (latitudeStart >= 3) {
 				// Print the map coordinates of the field
-				g2d.drawString("0", longitudeCounter * width + width/2 + 20, (latitudeCounter + 1)/2*height - height/2 + 237); // Debugging
+				g2d.drawString(fieldHeight, longitudeCounter * width + width/2 + 35, latitudeHeightDraw - height * 3/2 * latitudeMultiplier); // Debugging
 			}
 		}
 	}
