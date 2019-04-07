@@ -1,6 +1,7 @@
 package com.rule2d.main;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class MouseControl {
 	public void mousePressed(MouseEvent mouseEvent) {
@@ -57,5 +58,27 @@ public class MouseControl {
 	
 	public void windowStatusCreateMonsterScreen(MouseEvent mouseEvent) {
 		
+	}
+	
+	public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+		int mapZoomFactor = Rule2D.mapZoomFactor;
+		
+		if (mouseWheelEvent.getWheelRotation() > 0) {
+			// It is possible to zoom out twice, not more often			
+			if (mapZoomFactor > -2) {
+				Rule2D.mapZoomFactor = mapZoomFactor - 1;
+				System.out.println("Mouse wheel down, zooming out!"); // Debugging
+				
+				Rule2D.frame.repaint();
+			}			
+		} else {
+			// It is possible to zoom in to mapZoomFactor = 0, not closer
+			if (mapZoomFactor < 0) {
+				Rule2D.mapZoomFactor = mapZoomFactor + 1;
+				System.out.println("Mouse wheel up, zooming in!"); // Debugging
+				
+				Rule2D.frame.repaint();
+			}
+		}
 	}
 }

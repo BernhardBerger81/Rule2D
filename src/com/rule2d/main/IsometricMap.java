@@ -34,6 +34,7 @@ public class IsometricMap {
 				} else {
 					Rule2D.mapCoordinatesTerrain[longitude][latitude] = "GREEN";
 				}
+				// End debugging
 				
 				// What elevation does this field have?
 				Rule2D.mapCoordinatesElevation[longitude][latitude] = generateTerrainHeight();
@@ -44,17 +45,17 @@ public class IsometricMap {
 		Rule2D.frame.repaint();		
 	}
 	
-	public void preparePaintIsometricMap(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int ISOMAPDISPLAYWIDTH, int ISOMAPDISPLAYHEIGHT, 
-			int BLOCKWIDTH,	int BLOCKHEIGHT) {
+	public void preparePaintIsometricMap(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int isoBlockWidth, int isoBlockHeight, 
+			int isoMapDisplayWidthBlocks, int isoMapDisplayHeightBlocks) {
 		
 		// System.out.println("-----------------------------------------------------------------------"); // Debugging
 		// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
 		// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging
 		
 		// longitudeStart is the start coordinate of painting longitude map values on the screen
-		int longitudeStart = intPlayerLongitude - Rule2D.ISOMAPDISPLAYWIDTHBLOCKS/2;
+		int longitudeStart = intPlayerLongitude - isoMapDisplayWidthBlocks/2;
 		// latitudeStart is the start coordinate of painting latitude map values on the screen
-		int latitudeStart = intPlayerLatitude - Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2;
+		int latitudeStart = intPlayerLatitude - isoMapDisplayHeightBlocks/2;
 		int longitudeHolder = longitudeStart;
 		int latitudeHolder = latitudeStart;
 		// We need a latitude multiplier value for painting the uneven rows correctly
@@ -66,21 +67,21 @@ public class IsometricMap {
 		///// Paint the whole map in one go if longitudeStart >= 0 AND longitudeStart + MAPDISPLAYWIDTHBLOCKS < MAPWIDTH /////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		if (longitudeStart >= 0 && longitudeStart + Rule2D.ISOMAPDISPLAYWIDTHBLOCKS < Rule2D.MAPWIDTH) {
+		if (longitudeStart >= 0 && longitudeStart + isoMapDisplayWidthBlocks < Rule2D.MAPWIDTH) {
 			System.out.println("preparePaintIsometricMap: Inside if"); // Debugging
 			// Special case: In the North of the map
 			// The map has to stay still if latitudeStart is < MAPDISPLAYHEIGHT/2
-			if (intPlayerLatitude < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2) {
+			if (intPlayerLatitude < isoMapDisplayHeightBlocks/2) {
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
-			else if (intPlayerLatitude + Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
+			else if (intPlayerLatitude + isoMapDisplayHeightBlocks/2 >= Rule2D.MAPHEIGHT) {
 				// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
 				// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging
 				
-				int arrayLength = ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
+				int arrayLength = isoMapDisplayHeightBlocks/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
 					intArray[i] = arrayLength - i;
@@ -103,9 +104,10 @@ public class IsometricMap {
 			
 			// We have determined the values of longitudeStart and latitudeStart. Now it's time to paint the map
 			// Paint left-to-right (longitude) and top-to-bottom (latitude) in preparation for isometric display
-			for (int latitudeCounter = 0; latitudeCounter < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
-				for (int longitudeCounter = 0; longitudeCounter < Rule2D.ISOMAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, BLOCKWIDTH, BLOCKHEIGHT, latitudeMultiplier);
+			for (int latitudeCounter = 0; latitudeCounter < isoMapDisplayHeightBlocks; latitudeCounter++) {
+				for (int longitudeCounter = 0; longitudeCounter < isoMapDisplayWidthBlocks; longitudeCounter++) {
+					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, isoBlockWidth, isoBlockHeight,
+							latitudeMultiplier);
 					
 					longitudeStart++;
 				}
@@ -125,18 +127,18 @@ public class IsometricMap {
 			///////////////////////////////////////////////////////////////////////////
 			
 			// Special case: In the North of the map
-			if (intPlayerLatitude < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2) {
+			if (intPlayerLatitude < isoMapDisplayHeightBlocks/2) {
 				// System.out.println("Special case North, else if part"); // Debugging
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
-			else if (intPlayerLatitude + Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
+			else if (intPlayerLatitude + isoMapDisplayHeightBlocks/2 >= Rule2D.MAPHEIGHT) {
 				// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
 				// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging
 				
-				int arrayLength = ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
+				int arrayLength = isoMapDisplayHeightBlocks/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
 					intArray[i] = arrayLength - i;
@@ -156,9 +158,10 @@ public class IsometricMap {
 			// Paint the Western half of the map			
 			longitudeStart = longitudeStart + Rule2D.MAPWIDTH;
 			
-			for (int latitudeCounter = 0; latitudeCounter < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
+			for (int latitudeCounter = 0; latitudeCounter < isoMapDisplayHeightBlocks; latitudeCounter++) {
 				for (int longitudeCounter = 0; longitudeCounter < Math.abs(longitudeHolder); longitudeCounter++) {
-					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, BLOCKWIDTH, BLOCKHEIGHT, latitudeMultiplier);
+					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, isoBlockWidth, isoBlockHeight,
+							latitudeMultiplier);
 					
 					longitudeStart++;
 				}
@@ -181,14 +184,14 @@ public class IsometricMap {
 			latitudeMultiplier = latitudeMultiplierHolder;
 			
 			// Special case: In the North of the map
-			if (intPlayerLatitude < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2) {
+			if (intPlayerLatitude < isoMapDisplayHeightBlocks/2) {
 				// System.out.println("Special case North, else if part"); // Debugging
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
-			else if (intPlayerLatitude + Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
+			else if (intPlayerLatitude + isoMapDisplayHeightBlocks/2 >= Rule2D.MAPHEIGHT) {
 				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
 			} else {
@@ -196,9 +199,10 @@ public class IsometricMap {
 				latitudeStart = latitudeHolder;
 			}
 			
-			for (int latitudeCounter = 0; latitudeCounter < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
-				for (int longitudeCounter = Math.abs(longitudeHolder); longitudeCounter < Rule2D.ISOMAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, BLOCKWIDTH, BLOCKHEIGHT, latitudeMultiplier);
+			for (int latitudeCounter = 0; latitudeCounter < isoMapDisplayHeightBlocks; latitudeCounter++) {
+				for (int longitudeCounter = Math.abs(longitudeHolder); longitudeCounter < isoMapDisplayWidthBlocks; longitudeCounter++) {
+					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, isoBlockWidth, isoBlockHeight,
+							latitudeMultiplier);
 
 					longitudeStart++;
 				}
@@ -217,17 +221,17 @@ public class IsometricMap {
 			///////////////////////////////////////////////////////////////////////////
 			
 			// Special case: In the North of the map
-			if (intPlayerLatitude < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2) {
+			if (intPlayerLatitude < isoMapDisplayHeightBlocks/2) {
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
-			if (intPlayerLatitude + Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
+			if (intPlayerLatitude + isoMapDisplayHeightBlocks/2 >= Rule2D.MAPHEIGHT) {
 				// System.out.println("intPlayerLongitude: " + intPlayerLongitude); // Debugging
 				// System.out.println("intPlayerLatitude: " + intPlayerLatitude); // Debugging
 				
-				int arrayLength = ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2 + 1;
+				int arrayLength = isoMapDisplayHeightBlocks/2 + 1;
 				int intArray[] = new int[arrayLength];
 				for (int i = 0; i < arrayLength; i++) {
 					intArray[i] = arrayLength - i;
@@ -243,9 +247,10 @@ public class IsometricMap {
 			
 			// Normal case: In the middle of the map
 			// Paint the Western half of the map
-			for (int latitudeCounter = 0; latitudeCounter < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
+			for (int latitudeCounter = 0; latitudeCounter < isoMapDisplayHeightBlocks; latitudeCounter++) {
 				for (int longitudeCounter = 0; longitudeStart < Rule2D.MAPWIDTH; longitudeCounter++) {
-					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, BLOCKWIDTH, BLOCKHEIGHT, latitudeMultiplier);
+					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, isoBlockWidth, isoBlockHeight,
+							latitudeMultiplier);
 
 					longitudeStart++;
 				}
@@ -268,23 +273,24 @@ public class IsometricMap {
 			latitudeMultiplier = latitudeMultiplierHolder;
 
 			// Special case: In the North of the map
-			if (intPlayerLatitude < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2) {
+			if (intPlayerLatitude < isoMapDisplayHeightBlocks/2) {
 				latitudeStart = 0;
 			}
 			
 			// Special case: In the South of the map
 			// The map has to stay still if less than half a screen of blocks are left in latitude
-			else if (intPlayerLatitude + Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 >= Rule2D.MAPHEIGHT) {
+			else if (intPlayerLatitude + isoMapDisplayHeightBlocks/2 >= Rule2D.MAPHEIGHT) {
 				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
 			} else {
 				// Reset the latitude because we already used it to paint the Eastern part of the map
 				latitudeStart = latitudeHolder;
-			}			
+			}
 			
-			for (int latitudeCounter = 0; latitudeCounter < Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS; latitudeCounter++) {
-				for (int longitudeCounter = Rule2D.MAPWIDTH - longitudeHolder; longitudeCounter < Rule2D.ISOMAPDISPLAYWIDTHBLOCKS; longitudeCounter++) {
-					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, BLOCKWIDTH, BLOCKHEIGHT, latitudeMultiplier);
+			for (int latitudeCounter = 0; latitudeCounter < isoMapDisplayHeightBlocks; latitudeCounter++) {
+				for (int longitudeCounter = Rule2D.MAPWIDTH - longitudeHolder; longitudeCounter < isoMapDisplayWidthBlocks; longitudeCounter++) {
+					paintIsometricField(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, isoBlockWidth, isoBlockHeight,
+							latitudeMultiplier);
 
 					longitudeStart++;
 				}
@@ -314,7 +320,7 @@ public class IsometricMap {
 	}*/
 	
 	public void paintIsometricField(Graphics2D g2d, int longitudeCounter, int latitudeCounter, int longitudeStart, int latitudeStart, 
-			int width, int height, int latitudeMultiplier) {
+			int ISOBLOCKWIDTH, int height, int latitudeMultiplier) {
 		// System.out.println("longitudeStart: " + x); // Debugging
 		// System.out.println("latitudeStart: " + y); // Debugging
 		
@@ -322,10 +328,10 @@ public class IsometricMap {
 		// Check if y is even or odd. Odd y values mean that x has to go right half the width of the isometric field
 		int xTopTipCoordinate;
 		if (latitudeCounter % 2 == 0) {
-			xTopTipCoordinate = longitudeCounter * width + width/2;
+			xTopTipCoordinate = longitudeCounter * ISOBLOCKWIDTH + ISOBLOCKWIDTH/2;
 			// System.out.println("if case xTopTipCoordinate: " + xTopTipCoordinate); // Debugging
 		} else {
-			xTopTipCoordinate = (longitudeCounter + 1) * width;
+			xTopTipCoordinate = (longitudeCounter + 1) * ISOBLOCKWIDTH;
 			// System.out.println("else case xTopTipCoordinate: " + xTopTipCoordinate); // Debugging
 		}		
 		
@@ -357,14 +363,14 @@ public class IsometricMap {
 		// System.out.println("xTopTipCoordinate: " + xTopTipCoordinate); // Debugging
 		// System.out.println("yTopTipCoordinate: " + yTopTipCoordinate); // Debugging
 		
-		int xRightTipCoordinate = xTopTipCoordinate + width/2;
+		int xRightTipCoordinate = xTopTipCoordinate + ISOBLOCKWIDTH/2;
 		int yRightTipCoordinate = yTopTipCoordinate + height/4;
 		
 		int xBottomTipCoordinate = xTopTipCoordinate;
 		// int yBottomTipCoordinate = (y + 1) * Rule2D.BLOCKHEIGHT - Rule2D.BLOCKHEIGHT/2 + 200;
-		int yBottomTipCoordinate = yTopTipCoordinate + width/2;
+		int yBottomTipCoordinate = yTopTipCoordinate + ISOBLOCKWIDTH/2;
 		
-		int xLeftTipCoordinate = xTopTipCoordinate - width/2;
+		int xLeftTipCoordinate = xTopTipCoordinate - ISOBLOCKWIDTH/2;
 		int yLeftTipCoordinate = yRightTipCoordinate;
 		
 		int xIsometricField[] = {xTopTipCoordinate, xRightTipCoordinate, xBottomTipCoordinate, xLeftTipCoordinate};
@@ -393,15 +399,15 @@ public class IsometricMap {
 		boolean debugHeight = true;
 		
 		if (debugCoordinates == true) {
-			debugCoordinates(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, width, height, latitudeMultiplier);
+			debugCoordinates(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, ISOBLOCKWIDTH, height, latitudeMultiplier);
 		}
 		
 		if (debugHeight == true) {
-			debugHeight(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, width, height, latitudeMultiplier);
+			debugHeight(g2d, longitudeCounter, latitudeCounter, longitudeStart, latitudeStart, ISOBLOCKWIDTH, height, latitudeMultiplier);
 		}
 	}
 	
-	public void paintPlayerPosition(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int BLOCKWIDTH, int BLOCKHEIGHT,
+	public void paintPlayerPosition(Graphics2D g2d, int intPlayerLongitude, int intPlayerLatitude, int ISOBLOCKWIDTH, int ISOBLOCKHEIGHT,
 			int ISOMAPDISPLAYWIDTH, int ISOMAPDISPLAYHEIGHT, int MAPHEIGHT) {
 		
 		// System.out.println("Inside isometric paintPlayerPosition"); // Debugging
@@ -417,29 +423,29 @@ public class IsometricMap {
 		// The correctional factor "correctFactor" makes sure that the player position is in the middle of the block.
 		// The correctional factor for width is half the BLOCKWIDTH plus half the oval's x value.
 		// The correctional factor for height is half the BLOCKHEIGHT plus half the oval's y value.
-		int correctFactorW = ovalX - BLOCKWIDTH/8 + 1;
+		int correctFactorW = ovalX - ISOBLOCKWIDTH/8 + 1;
 		int correctFactorH = ovalY/2;
 		
-		int xOvalPosition = BLOCKWIDTH * ISOMAPDISPLAYWIDTH/BLOCKWIDTH/2 + correctFactorW;
-		int yOvalPosition = (BLOCKHEIGHT * (ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/4 + 1) + 200) - correctFactorH;
+		int xOvalPosition = ISOBLOCKWIDTH * ISOMAPDISPLAYWIDTH/ISOBLOCKWIDTH/2 + correctFactorW;
+		int yOvalPosition = (ISOBLOCKHEIGHT * (ISOMAPDISPLAYHEIGHT/ISOBLOCKHEIGHT/4 + 1) + 200) - correctFactorH;
 		// System.out.println("xOvalPosition: " + xOvalPosition); // Debugging
 		// System.out.println("yOvalposition: " + yOvalPosition); // Debugging
 		
 		// The player position moves in the North half of the map if intPlayerLatitude <= MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
-		if (intPlayerLatitude < ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
+		if (intPlayerLatitude < ISOMAPDISPLAYHEIGHT/ISOBLOCKHEIGHT/2) {
 			System.out.println("The player is in the North half of the map."); // Debugging
 			// Special case multiplication with zero (0)
 			if (intPlayerLatitude == 0) {
-				g2d.fillOval(xOvalPosition, (BLOCKHEIGHT + 200) - correctFactorH, ovalX, ovalY);
+				g2d.fillOval(xOvalPosition, (ISOBLOCKHEIGHT + 200) - correctFactorH, ovalX, ovalY);
 			} else {
-				int yCorrectionNorth = (Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 - intPlayerLatitude) * BLOCKHEIGHT/2;				
+				int yCorrectionNorth = (Rule2D.ISOMAPDISPLAYHEIGHTBLOCKS/2 - intPlayerLatitude) * ISOBLOCKHEIGHT/2;				
 				g2d.fillOval(xOvalPosition, yOvalPosition - yCorrectionNorth, ovalX, ovalY);
 			}
 		}
 		// The player position moves in the South half of the map if intPlayerLatitude > MAPHEIGHT - MAPDISPLAYHEIGHT/BLOCKHEIGHT/2
-		else if (intPlayerLatitude >= MAPHEIGHT - ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2) {
+		else if (intPlayerLatitude >= MAPHEIGHT - ISOMAPDISPLAYHEIGHT/ISOBLOCKHEIGHT/2) {
 			System.out.println("The player is in the South half of the map"); // Debugging
-			int yCorrectionSouth = (intPlayerLatitude - (MAPHEIGHT - ISOMAPDISPLAYHEIGHT/BLOCKHEIGHT/2))/2 * BLOCKHEIGHT;
+			int yCorrectionSouth = (intPlayerLatitude - (MAPHEIGHT - ISOMAPDISPLAYHEIGHT/ISOBLOCKHEIGHT/2))/2 * ISOBLOCKHEIGHT;
 			// System.out.println("yCorrectionSouth: " + yCorrectionSouth); // Debugging
 			g2d.fillOval(xOvalPosition, yOvalPosition + yCorrectionSouth, ovalX, ovalY);
 		}
@@ -500,7 +506,7 @@ public class IsometricMap {
 			if (latitudeStart == 1) {
 				// Print the map coordinates of the field
 				g2d.drawString(longitudeStart + ", " + latitudeStart, longitudeCounter * width + width/2 + 25, latitudeCoordinateDraw); // Debugging
-				System.out.println("Inside latitudeStart == 0"); // Debugging
+				// System.out.println("Inside latitudeStart == 0"); // Debugging
 			}			
 			if (latitudeStart >= 3) {
 				// Print the map coordinates of the field

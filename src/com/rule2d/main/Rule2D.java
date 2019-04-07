@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -18,28 +20,42 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Rule2D extends JPanel {
 	// Settings. TODO: Move to settings file.
-	public final static int BLOCKWIDTH  = 50; // Setting
-	public final static int BLOCKHEIGHT = 50; // Setting
-	public final static int ISOBLOCKWIDTH = 80; // Setting
-	public final static int ISOBLOCKHEIGHT = 80; // Setting
-	public final static int MAPDISPLAYWIDTHBLOCKS = 17; // Setting
-	public final static int MAPDISPLAYHEIGHTBLOCKS = 13; // Setting
-	public final static int ISOMAPDISPLAYWIDTHBLOCKS = MAPDISPLAYWIDTHBLOCKS; // Setting
-	public final static int ISOMAPDISPLAYHEIGHTBLOCKS = MAPDISPLAYHEIGHTBLOCKS * 2; // Setting // We can paint double the blocks on an isometric map
+	public final static int STARTINGSQUAREBLOCKWIDTH  = 50; // Setting
+	public final static int STARTINGSQUAREBLOCKHEIGHT = 50; // Setting
+	public final static int STARTINGISOBLOCKWIDTH = 80; // Setting
+	public final static int STARTINGISOBLOCKHEIGHT = 80; // Setting
+	public final static int STARTINGMAPDISPLAYWIDTHBLOCKS = 17; // Setting
+	public final static int STARTINGMAPDISPLAYHEIGHTBLOCKS = 13; // Setting
+	public final static int STARTINGISOMAPDISPLAYWIDTHBLOCKS = 17; // Setting
+	public final static int STARTINGISOMAPDISPLAYHEIGHTBLOCKS = 26; // Setting // We can paint double the blocks on an isometric map
 	// public final static int SCREENRESWIDTH  = 1200; // Setting
 	// public final static int SCREENRESHEIGHT = 900; // Setting
-	public final static int MAPDISPLAYWIDTH = MAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
-	public final static int MAPDISPLAYHEIGHT = MAPDISPLAYHEIGHTBLOCKS * BLOCKHEIGHT; // Setting
-	public final static int ISOMAPDISPLAYWIDTH = ISOMAPDISPLAYWIDTHBLOCKS * BLOCKWIDTH; // Setting
-	public final static int ISOMAPDISPLAYHEIGHT = ISOMAPDISPLAYHEIGHTBLOCKS * BLOCKHEIGHT; // Setting
-	public final static int MAPWIDTH = 20; // Setting // Has to be even number!!!
-	public final static int MAPHEIGHT = 32; // Setting // Has to be even number!!!
+	public final static int STARTINGSQUAREMAPDISPLAYWIDTH = STARTINGMAPDISPLAYWIDTHBLOCKS * STARTINGSQUAREBLOCKWIDTH; // Setting
+	public final static int STARTINGSQUAREMAPDISPLAYHEIGHT = STARTINGMAPDISPLAYHEIGHTBLOCKS * STARTINGSQUAREBLOCKHEIGHT; // Setting
+	public final static int STARTINGISOMAPDISPLAYWIDTH = STARTINGISOMAPDISPLAYWIDTHBLOCKS * STARTINGISOBLOCKWIDTH; // Setting
+	public final static int STARTINGISOMAPDISPLAYHEIGHT = STARTINGISOMAPDISPLAYHEIGHTBLOCKS * STARTINGISOBLOCKHEIGHT; // Setting
+	public final static int MAPWIDTH = 80; // Setting // Has to be even number!!!
+	public final static int MAPHEIGHT = 80; // Setting // Has to be even number!!!
 	public final static int MAXELEVATION = 1; // Setting
 
 	public final static int characterDirectionIndicatorHeight = 20; // Setting
-	public final static double startingMapZoomFactor = 1; // Setting
+	public final static int startingMapZoomFactor = 0; // Setting
 	
 	// Not settings
+	public static int SQUAREBLOCKWIDTH = STARTINGSQUAREBLOCKWIDTH; // Not a setting
+	public static int SQUAREBLOCKHEIGHT = STARTINGSQUAREBLOCKHEIGHT; // Not a setting
+	public static int ISOBLOCKWIDTH = STARTINGISOBLOCKWIDTH; // Not a setting
+	public static int ISOBLOCKHEIGHT = STARTINGISOBLOCKHEIGHT; // Not a setting
+	public static int MAPDISPLAYWIDTHBLOCKS = STARTINGMAPDISPLAYWIDTHBLOCKS; // Not a setting
+	public static int MAPDISPLAYHEIGHTBLOCKS = STARTINGMAPDISPLAYHEIGHTBLOCKS; // Not a setting
+	public static int ISOMAPDISPLAYWIDTHBLOCKS = STARTINGISOMAPDISPLAYWIDTHBLOCKS; // Not a setting
+	public static int ISOMAPDISPLAYHEIGHTBLOCKS = STARTINGISOMAPDISPLAYHEIGHTBLOCKS; // Not a setting
+	public static int SQUAREMAPDISPLAYWIDTH = STARTINGSQUAREMAPDISPLAYWIDTH; // Not a setting
+	public static int SQUAREMAPDISPLAYHEIGHT = STARTINGSQUAREMAPDISPLAYHEIGHT; // Not a setting
+	public static int ISOMAPDISPLAYWIDTH = STARTINGISOMAPDISPLAYWIDTH; // Not a setting
+	public static int ISOMAPDISPLAYHEIGHT = STARTINGISOMAPDISPLAYHEIGHT; // Not a setting
+	
+	
 	public static int mapInitialisationCounter = 0; // Not a setting
 	public static boolean databaseAvailable = false; // Not a setting 
 	public static String[][] mapCoordinatesTerrain = new String[MAPWIDTH][MAPHEIGHT]; // [longitude coordinate][latitude coordinate] => pkTerrain // Not a setting
@@ -50,7 +66,7 @@ public class Rule2D extends JPanel {
 	// public static String characterDirection = randomCharacterStartingDirection(); // Not a setting
 	// For testing purposes, set the starting characterDirection to a fixed value
 	public static String characterDirection = "S"; // Not a setting // Debugging
-	public static double mapZoomFactor = startingMapZoomFactor; // Not a setting
+	public static int mapZoomFactor = startingMapZoomFactor; // Not a setting
 	public static String windowStatus = "IntroScreen";
 
 	Gameboard gameboard = new Gameboard(this);
@@ -89,6 +105,13 @@ public class Rule2D extends JPanel {
 				mouseControl.mousePressed(mouseEvent);
 			}
 		});
+		
+		addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+				MouseControl mouseControl = new MouseControl();
+				mouseControl.mouseWheelMoved(mouseWheelEvent);
+			}
+		});
 	}
 
 	public static void init() {		
@@ -107,11 +130,20 @@ public class Rule2D extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		// What's the screen size on a multi-monitor device?
+		// https://stackoverflow.com/questions/3680221/how-can-i-get-screen-resolution-in-java
+		GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int screenWidth = graphicsDevice.getDisplayMode().getWidth();
+		int screenHeight = graphicsDevice.getDisplayMode().getHeight();
+		System.out.println("Screen size: " + screenWidth + "x" + screenHeight); // Debugging
+		
 		try {
 			// Load the intro screen.
 			ScreenControl screenControl = new ScreenControl();
-			screenControl.doScreenControl(g2d, windowStatus, gameboard, isometricMap, MAPWIDTH, MAPHEIGHT, MAPDISPLAYWIDTH, MAPDISPLAYHEIGHT,
-					ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, BLOCKWIDTH, BLOCKHEIGHT, ISOBLOCKWIDTH, ISOBLOCKHEIGHT, intPlayerLongitude, intPlayerLatitude);				
+			screenControl.doScreenControl(g2d, windowStatus, gameboard, isometricMap, MAPWIDTH, MAPHEIGHT, SQUAREMAPDISPLAYWIDTH, SQUAREMAPDISPLAYHEIGHT,
+					ISOMAPDISPLAYWIDTH, ISOMAPDISPLAYHEIGHT, SQUAREBLOCKWIDTH, SQUAREBLOCKHEIGHT, ISOBLOCKWIDTH, ISOBLOCKHEIGHT,
+					intPlayerLongitude, intPlayerLatitude, screenWidth, screenHeight);				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,12 +165,6 @@ public class Rule2D extends JPanel {
 		Rule2D game = new Rule2D();
 		
 		frame.add(game);
-		// What's the screen size on a multi-monitor device?
-		// https://stackoverflow.com/questions/3680221/how-can-i-get-screen-resolution-in-java
-		GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		int screenWidth = graphicsDevice.getDisplayMode().getWidth();
-		int screenHeight = graphicsDevice.getDisplayMode().getHeight();
-		System.out.println("Screen size: " + screenWidth + "x" + screenHeight); // Debugging
 		
 		// Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		// int screenWidth = (int) screensize.getWidth();

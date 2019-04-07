@@ -13,7 +13,11 @@ public class KeyboardControl {
 				keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD7 || keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD8 || 
 				keyEvent.getKeyCode() == KeyEvent.VK_NUMPAD9) {
 			movementControlSwitch(keyEvent);
-		}		
+		} 
+		// Zoom related key presses of plus or minus sign on keypad
+		else if (keyEvent.getKeyCode() == KeyEvent.VK_ADD || keyEvent.getKeyCode() == KeyEvent.VK_SUBTRACT) {			
+			zoomControlSwitch(keyEvent);
+		}
 	}
 	
 	public void movementControlSquareBased(KeyEvent e) {
@@ -1385,6 +1389,37 @@ public class KeyboardControl {
 		}
 	}
 	
+	private void zoomControlSquareBased(KeyEvent e) {
+		int mapZoomFactor = Rule2D.mapZoomFactor;
+		
+		System.out.println(e.getKeyCode()); // Debugging
+	}
+	
+	private void zoomControlIsometric(KeyEvent e) {
+		int mapZoomFactor = Rule2D.mapZoomFactor;
+		
+		// First, check which key code was received
+		if (e.getKeyCode() == KeyEvent.VK_ADD) {
+			// It is possible to zoom in to mapZoomFactor = 0, not closer
+			if (mapZoomFactor < 0) {
+				Rule2D.mapZoomFactor = mapZoomFactor + 1;
+				System.out.println("Plus key pressed, zooming in!"); // Debugging
+				
+				Rule2D.frame.repaint();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) {
+			// It is possible to zoom out twice, not more often			
+			if (mapZoomFactor > -2) {
+				Rule2D.mapZoomFactor = mapZoomFactor - 1;
+				System.out.println("Minus key pressed, zooming out!"); // Debugging
+				
+				Rule2D.frame.repaint();
+			}
+		}
+		
+		// System.out.println(e.getKeyCode()); // Debugging
+	}
+	
 	private int getCurrentIndex() {
 		int currentIndex = -1;
 		
@@ -1403,6 +1438,14 @@ public class KeyboardControl {
 			movementControlSquareBased(keyEvent);
 		} else if (Rule2D.windowStatus == "ShowIsometricMap") {
 			movementControlIsometric(keyEvent);
+		}
+	}
+	
+	private void zoomControlSwitch(KeyEvent keyEvent) {
+		if (Rule2D.windowStatus == "ShowSquareBasedMap") {
+			zoomControlSquareBased(keyEvent);
+		} else if (Rule2D.windowStatus == "ShowIsometricMap") {
+			zoomControlIsometric(keyEvent);
 		}
 	}
 }
